@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href="https://unpkg.com/bootstrap@3.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="https://unpkg.com/jquery@3.3.1/dist/jquery.min.js"></script>
+    <script src="https://unpkg.com/bootstrap@3.3.2/dist/js/bootstrap.min.js"></script>
+    <script src="https://unpkg.com/bootstrap-multiselect@0.9.13/dist/js/bootstrap-multiselect.js"></script>
+    <link href="https://unpkg.com/bootstrap-multiselect@0.9.13/dist/css/bootstrap-multiselect.css" rel="stylesheet"/>
+
+</head>
+<style>.multiselect-container > li > a > label {
+    padding: 4px 20px 3px 20px;
+}
+
+
+select {
+    display: block;
+    margin: 30% auto;
+    font-size: 20px;
+}</style>
+<body>
+<form id="form1">
+    <div style="padding:20px">
+
+{#        <select id="chkveg" multiple="multiple">#}
+{##}
+{#            <option value="">project.xml</option>#}
+{#            <optgroup label="client1">#}
+{#                <option value="">project2.xml</option>#}
+{#            </optgroup>#}
+{#            <optgroup label="client2">#}
+{#                <option value="">project5.xml</option>#}
+{#                <option value="">project6.xml</option>#}
+{#                <optgroup label="client2_a">#}
+{#                    <option value="" style="margin-left:23px;">project7.xml</option>#}
+{#                    <option value="" style="margin-left:23px;">project8.xml</option>#}
+{#                </optgroup>#}
+{#                <option value="">project3.xml</option>#}
+{#                <option value="">project4.xml</option>#}
+{#            </optgroup>#}
+{#            <option value="">project0.xml</option>#}
+{#            <option value="">project1.xml</option>#}
+
+{#        <ul  class="dropdown" style="display: none">#}
+{#            <li> <input type="checkbox" class="dropdown-toggle"> Pakistan  <ul>#}
+{#                <li><input type="checkbox">KPK</li>#}
+{#                 <li><input type="checkbox">Punjab#}
+{#                     <ul >#}
+{#                         <li><input type="checkbox">Lahore</li>#}
+{#                         <li><input type="checkbox">Chakwal</li>#}
+{#                     </ul>#}
+{#                 </li>#}
+{#                 <li><input type="checkbox">Sindh</li>#}
+{#                <li><input type="checkbox">Balochistan</li>#}
+{#            </ul>#}
+{#            </li>#}
+{##}
+{#            <li> Pakistan  <ul>#}
+{#                <li>KPK</li>#}
+{#                <li>Punjab</li>#}
+{#                <li>Sindh</li>#}
+{#                <li>Balochistan</li>#}
+{#            </ul>#}
+{#            </li>#}
+{#        </ul>#}
+{#        </select>#}
+        <li data-id="1">
+    <input class="cat_check" data-pid="0" type="checkbox" value="1" id="1" checked/>Exterior Signs
+        <ul class="category_select_list">
+            <li data-id="15">
+                <input class="cat_check" data-pid="1" type="checkbox" value="15" id="15" checked/>Monument
+            </li>
+            <li data-id="17">
+                <input class="cat_check" data-pid="1" type="checkbox" value="17" id="17" checked/>Channel Letters
+                <ul class="category_select_list">
+                    <li data-id="28">
+                        <input class="cat_check" data-pid="17" type="checkbox" value="28" id="28" checked/>Neon Channel Letter
+                    </li>
+                </ul>
+            </li>
+            <li data-id="16">
+                <input class="cat_check" data-pid="1" type="checkbox" value="16" id="16" checked/>Banners
+            </li>
+        </ul>
+    </li>
+
+        <br/><br/>
+
+        <input type="button" id="btnget" value="Get Selected Values"/>
+    </div>
+</form>
+
+
+</body>
+<script>
+ function checkSiblings(target) {
+    var siblingsChecked = 0;
+    target.parent('li').siblings('li').children('input').each(function(i, el){
+        if ($(el).is(':checked')) {
+            siblingsChecked++;
+        }
+    });
+
+    if (siblingsChecked === 0) {
+        var possibleParent = target.parent('li').parents('li').eq(0).children('input');
+        if (possibleParent.length) {
+            //console.log('we have a parent');
+            possibleParent.prop('checked', false);
+        }
+        else {
+            //console.log('nothing');
+        }
+    }
+}
+
+$('.cat_check').on('click', function (ev) {
+    if ($(this).is(':checked')) {
+        // check all children
+        $(this).parent('li').each(function(i, el){
+            $(el).find('input').prop('checked', true);
+        });
+        // check inputs on the way up
+        $(this).parents('li').each(function(i, el){
+            $(el).children('input').prop('checked', true);
+        });
+    }
+    else {
+        $(this).parent('li').find('input').prop('checked', false);
+        checkSiblings($(this));
+    }
+});
+</script>
+</html>

@@ -1,0 +1,336 @@
+{% extends 'base3.html' %}
+{% load static %}
+
+{% block title %}
+    Dashboard
+{% endblock %}
+{% block content %}
+
+
+
+    <link rel="stylesheet" href="https://cdn.materialdesignicons.com/5.0.45/css/materialdesignicons.min.css">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/style2.css' %}">
+
+    <link href="{% static 'Clusterize/clusterize.css' %}" rel="stylesheet">
+
+    <style>
+        .scrollable-menu {
+            max-height: 200px;
+            /* set the max-height to a value that works for your layout */
+            overflow-y: auto;
+            /* enable scrolling on the y-axis */
+
+
+        }
+
+        #loading {
+            position: fixed;
+            display: block;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            text-align: center;
+            opacity: 0.7;
+            background-color: #fff;
+            z-index: 99;
+        }
+
+        #loading-image {
+            position: absolute;
+            top: 300px;
+            left: 740px;
+            z-index: 150;
+        }
+    </style>
+
+
+    <body class="hold-transition light-mode sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
+    <div class="wrapper">
+
+
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <section class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <h1>Exscrapy History</h1>
+                        </div>
+                        <div class="col-sm-6">
+                            <ol class="breadcrumb float-sm-right">
+                                <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+                                <li class="breadcrumb-item active">Exscrapy History</li>
+                            </ol>
+
+                        </div>
+                    </div>
+                </div><!-- /.container-fluid -->
+            </section>
+
+            <!-- Main content -->
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="row">
+
+                        <div class="col-md-2">
+
+                        </div>
+                        <div class="col-md-8">
+
+                            <!-- jquery validation -->
+                            <div class="card card-primary">
+                                <div class="card-header">
+                                    <h3 class="card-title"> Search your activity data</h3>
+                                </div>
+                                <h5 style="text-decoration:#00a65a">{% include '_messages.html' %}</h5>
+                                <!-- /.card-header -->
+                                <!-- form start -->
+                                <form action="{% url 'index' %}" method="post" id="test">
+                                    {% csrf_token %}
+                                    <div class="card-body">
+                                        <div class="form-group">
+                                            <label for="query_name">Query Name(Reference)</label>
+
+                                            <input class="form-control" type="text" name="query_reference"
+                                                   placeholder="Enter the query reference" required>
+
+
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Category</label>
+
+
+                                            <input list="activities" name="activity" class="form-control"
+                                                   placeholder="Select Activity" required>
+                                            <datalist id="activities">
+                                                {% for item in categories %}
+                                                    <option value="{{ item.name }}">{{ item.name }}</option>
+                                                {% endfor %}
+                                            </datalist>
+                                        </div>
+
+                                        <div class="row">
+
+                                            <div class="col-4">
+                                                <input list="country_list" id="getCountry" class="form-control"
+                                                       name="selected_country" required placeholder="Select Country">
+                                                <datalist id="country_list">
+                                                    {% for country in countries %}
+                                                        <option class="form-control" value="{{ country.country }}">
+                                                            {{ country.country }}</option>
+                                                    {% endfor %}
+                                                </datalist>
+                                                <div class="mt-3 form-check">
+                                                    <input class="form-check-input" type="checkbox" value=""
+                                                           name="selectAllCountry" id="selectAllCountry">
+                                                    <label class="form-check-label" for="selectAllCountry">
+                                                        Select all states and places.
+                                                    </label>
+                                                </div>
+                                            </div>
+
+                                            <div id="stateDiv" class="col-4" style="display: none;">
+                                                <input list="state_list" id="getState" class="form-control"
+                                                       name="selected_state" required placeholder="Select State">
+                                                <datalist id="state_list">
+
+                                                </datalist>
+                                            </div>
+
+                                            <div style="display: none;" id="placeDiv" class="dropdown col-4">
+                                                <button style="border: 1px solid #ced4da;"
+                                                        class="btn dropdown-toggle  w-100" type="button"
+                                                        id="dropdownMenuButton" data-toggle="dropdown"
+                                                        aria-haspopup="true"
+                                                        aria-expanded="false">
+                                                    Select Places
+                                                </button>
+                                                <div class="dropdown-menu w-100 p-3"
+                                                     aria-labelledby="dropdownMenuButton">
+
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control" placeholder="Search..."
+                                                               id="searchInput">
+                                                    </div>
+                                                    <div id="placeOptions" class="form-group scrollable-menu">
+
+                                                    </div>
+                                                    <div class="text-center">
+                                                        <button class="btn btn-secondary btn-sm w-50" id="selectAllBtn"
+                                                                type="button">Select All
+                                                        </button>
+                                                    </div>
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br>
+
+                                        <div class="card-footer">
+                                            <button type="submit" id="Login" class="btn btn-primary" onclick="showDiv()">Get Data</button>
+                                        </div>
+                                </form>
+                            </div>
+                            <!-- /.card -->
+                        </div>
+                        <div class="col-md-2">
+
+
+                        </div>
+                        <!-- /.row -->
+                    </div>
+                    <!-- /.container-fluid -->
+            </section>
+            <!-- /.content -->
+        </div>
+    </div>
+     <div id="loadingGif" style="display:none">
+
+    <img id="loading-image" style="height: 160px;width: 160px" src="{% static 'dist/img/loader.gif' %}"
+         alt="Loading..."/>
+     </div>
+
+
+    <script type="text/javascript">
+        function showDiv() {
+            document.getElementById('Login').style.display = "none";
+            document.getElementById('loadingGif').style.display = "block";
+            setTimeout(function () {
+                document.getElementById('loadingGif').style.display = "none";
+
+            }, 30000);
+
+        }
+    </script>
+
+    <script type="text/javascript">
+
+        $("#selectAllCountry").on("change", selectAllCountry);
+
+        function selectAllCountry(event) {
+            if (event.target.checked) {
+                var stateDiv = document.getElementById('stateDiv');
+                var placeDiv = document.getElementById('placeDiv');
+                var getState = document.getElementById('getState');
+
+                stateDiv.style.display = "none";
+                placeDiv.style.display = "none";
+                getState.removeAttribute("required");
+
+            }
+        }
+
+
+        var searchInput = document.getElementById("searchInput");
+        var selectAllBtn = document.getElementById("selectAllBtn");
+        var checkboxes = document.querySelectorAll(".dropdown-checkbox");
+
+
+        selectAllBtn.addEventListener("click", (event) => {
+
+            event.preventDefault();
+            event.stopPropagation();
+            console.log(checkboxes)
+            checkboxes.forEach((checkbox) => {
+                checkbox.checked = !checkbox.checked;
+            });
+        });
+
+
+        searchInput.addEventListener("keyup", () => {
+            const searchValue = searchInput.value.toLowerCase();
+            checkboxes.forEach((checkbox) => {
+                const checkboxLabel = checkbox.parentNode.textContent.toLowerCase();
+                if (checkboxLabel.includes(searchValue)) {
+                    checkbox.parentNode.style.display = "block";
+                } else {
+                    checkbox.parentNode.style.display = "none";
+                }
+            });
+        });
+
+
+        $("#next_btn1").hide();
+
+
+        $("#getCountry").on("change", function () {
+            var selectedValue = $(this).val();
+            var stateInp = document.getElementById('getState');
+            var stateDiv = document.getElementById('stateDiv');
+            stateDiv.style.display = "none";
+            stateInp.value = ''
+            var placeDiv = document.getElementById('placeDiv');
+            placeDiv.style.display = "none";
+
+            $.ajax({
+                url: "{% url 'get-country' %}",
+                type: "POST",
+                data: {"country": selectedValue},
+                success: function (res) {
+
+                    var dataLst = document.getElementById('state_list');
+                    var htmlData = '';
+
+                    console.log(res)
+
+                    for (id in res['data']) {
+
+                        htmlData = htmlData + `<option class="form-control" value="${res['data'][id]}">${res['data'][id]}</option>`;
+
+                    }
+                    dataLst.innerHTML = htmlData;
+                    var stateDiv = document.getElementById('stateDiv');
+                    stateDiv.style.display = "block";
+
+
+                }
+            });
+        })
+
+        $("#getState").on("change", function () {
+            var selectedValue = $(this).val();
+            var country = document.getElementById('getCountry').value
+
+            $.ajax({
+                url: "{% url 'get-state' %}",
+                type: "POST",
+                data: {"state": selectedValue, "country": country},
+                success: function (res) {
+
+                    console.log(res)
+
+                    var placeDiv = document.getElementById('placeDiv');
+                    var options = document.getElementById('placeOptions');
+                    var htmlData = '';
+
+                    for (id in res['data']) {
+
+                        htmlData = htmlData + `<div class="form-check">
+                            <input class="form-check-input dropdown-checkbox" type="checkbox" name="places" value="${res['data'][id]}" id="checkbox${id}">
+                            <label class="form-check-label" for="checkbox${id}">
+                                ${res['data'][id]}
+                            </label>
+                            </div>`;
+
+                    }
+                    options.innerHTML = htmlData;
+                    placeDiv.style.display = "block";
+
+                    checkboxes = document.querySelectorAll(".dropdown-checkbox");
+
+
+                }
+            });
+        })
+
+
+    </script>
+
+
+    </body>
+
+
+{% endblock %}

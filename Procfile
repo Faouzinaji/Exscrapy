@@ -1,0 +1,1 @@
+web: gunicorn googleSearchScraper.wsgi --log-file -

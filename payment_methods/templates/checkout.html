@@ -1,0 +1,80 @@
+
+
+
+{% extends 'base2.html' %}
+{% load static %}
+
+{% block title %}
+    Check Out
+{% endblock %}
+{% block content %}
+<body class="hold-transition light-mode sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
+
+    <div class="wrapper">
+        <div class="content-wrapper">
+            <br>
+            <section class="container my-4" style="background-color: white;width: 70%">
+                <h1 class="text-center mb-4 section-heading border-bottom pb-2">Checkout</h1>
+                <h5 style="text-decoration:#00a65a">{% include '_messages.html' %}</h5>
+                <form method="post" action="{% url 'checkout_session' plan.id %}">
+                                    {% csrf_token %}
+                <table class="table table-bordered">
+                    <thead class="table-warning">
+                    <tr>
+
+                        <th>Plan Detail</th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+
+
+                        <table class="table-bordered table">
+                            <tr>
+                                <th>Plan Name</th>
+                                <td>{{ plan.title }}</td>
+                            </tr>
+                            <tr>
+                                <th>Plan Price</th>
+                                <td>{{ plan.price }}</td>
+                            </tr>
+
+                            <tr>
+                                <th>No of Lines</th>
+                                <td>{{ plan.no_of_lines }}</td>
+                            </tr>
+                            <tr>
+                                <th>Description</th>
+                                <td>{{plan.description}}</td>
+                            </tr>
+
+
+
+
+
+
+
+
+
+
+                        </table>
+
+
+
+                    </tr>
+
+                    </tbody>
+                      <button type="submit" class="btn btn-primary btn-block btn-flat">Subscribe</button>
+
+                </table>
+                    </form>
+            </section>
+        </div>
+
+    </div>
+
+</body>
+<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+
+{% endblock %}

@@ -1,0 +1,215 @@
+
+{% extends 'base2.html' %}
+{% load static %}
+
+{% block title %}
+    Price plans
+{% endblock %}
+{% block content %}
+
+
+
+<body class="hold-transition light-mode sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Price Plans</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+              <li class="breadcrumb-item active">Price Plans</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+<h6>{% include '_messages.html' %}</h6>
+    <!-- Main content -->
+    <section class="content">
+
+      <!-- Default box -->
+      <div class="card card-solid">
+        <div class="card-body pb-0">
+          <div class="row">
+          {% if sub_exist == 'No' %}
+           <div class="col-12 col-sm-6 col-md-3 d-flex align-items-stretch flex-column">
+              <div class="card bg-light d-flex flex-fill">
+
+                <div class="text-center border-bottom-0 btn btn-lg btn-primary"  >
+                  <h5>Pay as Go</h5>
+                </div>
+
+              <hr>
+
+                <div class="card-body pt-0">
+                  <div class="row">
+
+
+
+
+
+                        <div class="col-12 text-center">
+
+
+                          <p><b>You have to pay <b> $0.01 per line</b> depending upon <b>No of queries </b></b></p>
+
+
+                          <p><b>0.01 $ / lines</b></p>
+                             <p><b>Expensive for regular customers</b></p>
+                             <p><b>Buy any plan to save your cost</b></p>
+
+
+                        </div>
+
+
+                  </div>
+                </div>
+
+                          <div class="card-footer">
+                  <div class="text-center">
+
+                    <a href="{% url 'dashboard' %}" class="btn btn-md btn-info">
+                      <i class="fas fa-sign-in-alt"></i> Pay as Go
+                    </a>
+                  </div>
+                </div>
+
+
+
+              </div>
+            </div>
+          {% else %}
+            <div class="col-12 col-sm-6 col-md-3 d-flex align-items-stretch flex-column">
+              <div class="card bg-light d-flex flex-fill">
+
+                <div class="text-center border-bottom-0 btn btn-lg btn-primary" style="background-color: #5cb85c" >
+                  <h5>Current Active Plan <br>
+                  {{ current_active_plan.plan.title }}</h5>
+                </div>
+
+              <hr>
+
+                <div class="card-body pt-0">
+                  <div class="row">
+
+
+                        <div class="col-12 text-center">
+                          <img src="{{current_active_plan.plan.plan_img.url}}" alt="user-avatar" class="img-circle img-fluid">
+                        </div>
+
+                      <br>
+                        <div class="col-12 text-center">
+
+
+                      <p><b>Price: ${{current_active_plan.plan.price}}</b></p>
+                          <p><b>{{current_active_plan.plan.no_of_lines}} lines per month</b></p>
+                          <p><b>${{ current_active_plan.plan.perline_price}} / per line</b></p>
+
+
+                        </div>
+
+
+                  </div>
+                </div>
+
+                          <div class="card-footer">
+                  <div class="text-center">
+
+                    <a href="{% url 'cancel_subscription' %}" class="btn btn-md btn-danger">
+                      Cancel Subscription
+                    </a>
+                  </div>
+                </div>
+
+
+
+              </div>
+            </div>
+          {% endif %}
+              {% for plan in plans %}
+            <div class="col-12 col-sm-6 col-md-3 d-flex align-items-stretch flex-column">
+              <div class="card bg-light d-flex flex-fill">
+
+                <div class="text-center border-bottom-0 btn btn-lg btn-primary"  >
+                  <h5>{{plan.title}}</h5>
+                </div>
+
+              <hr>
+
+                <div class="card-body pt-0">
+                  <div class="row">
+
+
+                        <div class="col-12 text-center">
+                          <img src="{{plan.plan_img.url}}" alt="user-avatar" class="img-circle img-fluid">
+                        </div>
+
+                      <br>
+                        <div class="col-12 text-center">
+
+
+                          <p><b>Price: ${{plan.price}}</b></p>
+                          <p><b>{{plan.no_of_lines}} lines per month</b></p>
+                          <p><b>0.0009 $ / lines</b></p>
+
+
+                        </div>
+
+
+                  </div>
+                </div>
+
+                          <div class="card-footer">
+                  <div class="text-center">
+
+                    <a href="{% url 'checkout' plan.id %}" class="btn btn-md btn-info">
+                       Subscribe Now
+                    </a>
+                  </div>
+                </div>
+
+
+
+              </div>
+            </div>
+              {% endfor %}
+
+
+
+
+          </div>
+
+
+        </div>
+
+      </div>
+
+
+
+    </section>
+
+    <!-- /.content -->
+  </div>
+<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+</body>
+  <!-- /.content-wrapper -->
+
+
+
+
+
+
+
+
+
+
+{% endblock %}
+
+
+
+
+

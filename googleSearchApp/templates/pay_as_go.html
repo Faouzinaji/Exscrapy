@@ -1,0 +1,120 @@
+{% extends 'base2.html' %}
+{% load static %}
+
+{% block title %}
+    Pay As You Go
+{% endblock %}
+{% block content %}
+
+
+
+    <body class="hold-transition light-mode sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1>Pay and Go</h1>
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+                            <li class="breadcrumb-item active">Pay and Go</li>
+                        </ol>
+                    </div>
+                </div>
+            </div><!-- /.container-fluid -->
+        </section>
+        <h6>{% include '_messages.html' %}</h6>
+        <!-- Main content -->
+        <section class="content">
+
+            <!-- Default box -->
+            <div class="card card-solid">
+                <div class="card-body pb-0">
+                    <div class="row">
+
+                        <div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column">
+
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column">
+                            <div class="card bg-light d-flex flex-fill">
+
+                                <div class="card-header text-center border-bottom-0" style="background-color: #56fffa">
+                                    <h5>Pay and Go</h5>
+                                    <h5>You must have <b>{{ counter_pages }}</b> rows in your
+                                                balance.</h5>
+                                </div>
+
+                                <hr>
+
+                                <div class="card-body pt-0">
+                                    <div class="row">
+
+
+                                        <div class="col-12 text-center">
+
+                                            <h4>The result of your request exceeds the search quotes you have </h4>
+                                            <h6>For this request you must have <b>{{ counter_pages }}</b> rows in your
+                                                balance. </h6>
+
+
+                                            <p>Continue with pay as you go with additional price $ 0.01/Line</p>
+                                            <p>Please pay $ <b>{{ expected_price }}</b> for this search result.</p>
+
+
+                                        </div>
+
+
+                                    </div>
+                                </div>
+
+                                <div class="card-footer">
+                                    <div class="text-center">
+
+                                        <a href="{% url 'pay_as_go' expected_price %}" class="btn btn-lg btn-primary">
+                                            <i class="fas fa-sign-in-alt"></i> Pay </a>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column">
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+            <!-- /.card -->
+
+        </section>
+
+        <!-- /.content -->
+    </div>
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    </body>
+    <!-- /.content-wrapper -->
+
+
+
+
+
+
+
+
+
+
+{% endblock %}
+
+
+
+
+

@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+Login OTP
+{% endblock %}
+{% block content %}
+
+
+<!-- /.login-box -->
+
+
+<body class="hold-transition login-page">
+<div class="login-box">
+  <div class="card card-outline card-primary">
+    <div class="card-header text-center">
+      <a href="#" class="h1"><img src="{% static 'dist/img/traders_brid.PNG' %}" width="60%" height="60%" alt="" /></a>
+    <h5>Please  open your <b>Google Authenticator app </b> linked with this account and enter the current running OTP here.</h5>
+    </div>
+
+    <div class="card-body">
+      <p class="login-box-msg">OTP Verification</p>
+          <h5 style="text-decoration:#00a65a">{% include '_messages.html' %}</h5>
+        <form action="{% url 'login_otp' %}" method="post">
+            {% csrf_token %}
+        <div class="input-group mb-3">
+          <input class="form-control" type="number" name="2facode" min="0"  pattern="/^-?\d+\.?\d*$/" onKeyPress="if(this.value.length==6) return false;" placeholder="Enter Code" required >
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-code"></span>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <button type="submit" class="btn btn-primary btn-block">Login</button>
+          </div>
+          <!-- /.col -->
+        </div>
+      </form>
+
+    </div>
+    <!-- /.login-card-body -->
+  </div>
+</div>
+</body>
+
+
+
+{% endblock %}

@@ -1,0 +1,145 @@
+{% extends 'base2.html' %}
+{% load static %}
+
+{% block title %}
+    Dashboard
+{% endblock %}
+{% block content %}
+
+
+
+
+
+
+    <body class="hold-transition light-mode sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
+    <div class="wrapper">
+
+
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <section class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <h1>Exscrapy History</h1>
+                        </div>
+                        <div class="col-sm-6">
+                            <ol class="breadcrumb float-sm-right">
+                                <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+                                <li class="breadcrumb-item active">Exscrapy History</li>
+                            </ol>
+
+                        </div>
+                    </div>
+                </div><!-- /.container-fluid -->
+            </section>
+
+            <!-- Main content -->
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12">
+
+                            <div class="card">
+                                <div class="card-header">
+                                    <a href="{% url 'get_data_option' %}" class="btn btn-md btn-primary">
+                                        <i class="fas fa-plus"></i> Add New Query
+                                    </a>
+
+                                </div>
+                                <h5 style="text-decoration:#00a65a">{% include '_messages.html' %}</h5>
+                                <!-- /.card-header -->
+                                <div class="card-body">
+                                    <table id="example1" class="table table-bordered table-hover">
+
+
+                                        <thead style="background-color:#007bff" class="text-white">
+                                        <tr>
+                                            <th>Query No#</th>
+                                            <th>Query Name</th>
+
+                                            <th>Query Type</th>
+                                            <th>Category</th>
+
+
+
+                                            <th>File</th>
+                                            <th>Action</th>
+
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for item in user_quries %}
+                                            <tr>
+                                                <td>{{ forloop.counter }}</td>
+
+                                                <td>{{ item.query_name }}</td>
+                                                <td>{{ item.query_type }}</td>
+                                                <td>{{ item.category }}</td>
+
+
+
+
+
+                                                <td>{% if item.output_file %}
+                                                    <a href="{{ item.output_file.url }}">
+                                                    <button  class="btn-sm btn-primary"><i class="fa fa-download"></i> Download
+                                                        </button></a>
+                                                {% else %}
+                                                    <a>No file available</a>
+                                                {% endif %}
+                                                </td>
+                                                <td>
+                                                 <a href="{% url 'run_again_query' item.id %}" class="btn btn-md btn-primary">
+                                        <i class="fas fa-refresh"></i> Run again
+                                    </a>
+
+
+                                                </td>
+
+                                            </tr>
+                                        {% endfor %}
+
+                                        </tbody>
+
+
+                                    </table>
+                                </div>
+                                <!-- /.card-body -->
+                            </div>
+
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                    <!-- /.row -->
+                </div>
+                <!-- /.container-fluid -->
+            </section>
+            <!-- /.content -->
+        </div>
+    </div>
+
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script>
+        $(function () {
+            $("#example1").DataTable({
+                "responsive": true, "lengthChange": false, "autoWidth": true,
+                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+            }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+            $('#example2').DataTable({
+                "paging": true,
+                "lengthChange": false,
+                "searching": false,
+                "ordering": true,
+                "info": true,
+                "autoWidth": true,
+                "responsive": true,
+            });
+        });
+    </script>
+    </body>
+
+
+{% endblock %}
+

@@ -1,0 +1,84 @@
+{% extends 'base2.html' %}
+{% load static %}
+{% block title %}
+    Contact Us
+{% endblock %}
+{% block content %}
+
+
+
+
+
+
+        <body class="hold-transition light-mode sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
+    <div class="wrapper">
+
+
+
+        <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Contact us</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+              <li class="breadcrumb-item active">Contact us</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content" >
+
+      <!-- Default box -->
+      <div class="card" >
+        <div class="card-body row">
+
+          <div class="col-12" >
+              <h5 style="text-decoration:#00a65a">{% include '_messages.html' %}</h5>
+               <form action="{% url 'contact_us' %}" method="post">
+                  {% csrf_token %}
+            <div class="form-group">
+              <label for="inputName">Name</label>
+              <input type="text" id="inputName" name="name" placeholder="Name" value="{{ user_profile.owner.first_name }} &nbsp; {{ user_profile.owner.last_name }}" class="form-control" readonly/>
+            </div>
+            <div class="form-group">
+              <label for="inputEmail">E-Mail</label>
+              <input type="email" id="inputEmail" name="email" placeholder="Email" value="{{ user_profile.owner.email }}" class="form-control" readonly />
+            </div>
+            <div class="form-group">
+              <label for="inputSubject">Subject</label>
+              <input type="text" id="inputSubject" name="subject" placeholder="Subject" class="form-control" required/>
+            </div>
+            <div class="form-group">
+              <label for="inputMessage">Message</label>
+              <textarea id="inputMessage" class="form-control" name="message" placeholder="Message" rows="4" required></textarea>
+            </div>
+            <div class="form-group">
+              <input type="submit" class="btn btn-primary" value="Send message">
+            </div>
+                  </form> </div>
+        </div>
+      </div>
+
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+    </div>
+        <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+        </body>
+
+
+
+
+
+
+{% endblock %}
+
