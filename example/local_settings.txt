@@ -1,0 +1,29 @@
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME':'exscrapy' ,
+        'USER': 'postgres',
+        'PASSWORD': 'your_pass',
+        'HOST': 'localhost',
+    }
+}
+
+SECRET_KEY = SECRET_KEY
+DEBUG = False
+
+# CLOUDINARY_STORAGE
+_CLOUD_NAME = 'name'
+_API_KEY = 'api_key'
+_API_SECRET = 'secrite'
+
+# Email
+EMAIL_USER = 'email'
+EMAIL_PASSWORD = 'pass'
+
+# API keys
+STRIPE_PUBLISHABLE = 'stripe'
+STRIPE_SECRET = 'strip'
+
+BASIC_PRICE = 'key'
+PREMIUM_PRICE = 'key'
+ADVANCE_PRICE = 'key'

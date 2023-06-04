@@ -58,16 +58,16 @@ def checkout(request, plan_id):
 def checkout_session(request, plan_id):
     stripe.api_key = settings.STRIPE_SECRET_KEY
     plan = Price_plan.objects.get(pk=plan_id)
-    dict = {'Basic Plan': settings.BASIC_PRICE_ID, 'Premium Plan': settings.PREMIUM_PRICE_ID,
-            'Standard Plan': settings.ADVANCE_PRICE_ID}
+    dict = {
+        'Basic Plan': settings.BASIC_PRICE_ID, 
+        'Premium Plan': settings.PREMIUM_PRICE_ID,
+        'Standard Plan': settings.ADVANCE_PRICE_ID
+    }
     plan_price = dict[plan.title]
 
     session = stripe.checkout.Session.create(
-
         payment_method_types=['card'],
-
         line_items=[{
-
             "price": plan_price,
             'quantity': 1,
         }],

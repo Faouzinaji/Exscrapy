@@ -13,6 +13,12 @@ import os
 from pathlib import Path
 import dj_database_url
 
+from .local_settings import (
+    SECRET_KEY, DEBUG, _CLOUD_NAME, _API_KEY, _API_SECRET, EMAIL_USER,
+    EMAIL_PASSWORD, STRIPE_PUBLISHABLE, STRIPE_SECRET, BASIC_PRICE, 
+    PREMIUM_PRICE, ADVANCE_PRICE, DATABASES
+)
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 from django.contrib import messages
 
@@ -23,10 +29,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-s2yc9hiq2w48*5*ql%wrw=oe6a8j=sa)viie#mx6w5$c^exml-'
+SECRET_KEY = SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = DEBUG
 
 ALLOWED_HOSTS = ['*']
 
@@ -103,26 +109,17 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = "268907281420-e8f3egpcid35usei3qemf6hpl9fh7c4g.a
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = "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"
 
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
-
-DATA_UPLOAD_MAX_NUMBER_FIELDS = None
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME':'exscrapy' ,
-#         'USER': 'postgres',
-#         'PASSWORD': 'Allahone5531',
-#         'HOST': 'localhost',
-#
-#
-#
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
+
+DATA_UPLOAD_MAX_NUMBER_FIELDS = None
+DATABASES = DATABASES
+
+
 # db_from_env = dj_database_url.config(conn_max_age=600)
 # DATABASES['default'].update(db_from_env)
 
@@ -165,15 +162,15 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 
 
-
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static', 'media')
 
 CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': 'dwqb7y8lr',
-    'API_KEY': '379788336851674',
-    'API_SECRET': 'MgIzj4Sj59RFoCDKiQSlM5qU6Zw',
+    'CLOUD_NAME': _CLOUD_NAME,
+    'API_KEY': _API_KEY,
+    'API_SECRET': _API_SECRET,
 }
+
 #DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # Default primary key field type
@@ -192,39 +189,17 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'adnanrafique340@gmail.com'
-EMAIL_HOST_PASSWORD = 'gqivvfogakumclyd'
+EMAIL_HOST_USER = EMAIL_USER
+EMAIL_HOST_PASSWORD = EMAIL_PASSWORD
 EMAIL_PORT = 587
 
 
-# DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# EMAIL_USE_TLS = True
-# EMAIL_USE_SSL = False
-# EMAIL_HOST = 'mail51.lwspanel.com'
-# EMAIL_HOST_USER = 'no_reply@excrapy.com'
-# EMAIL_HOST_PASSWORD = 'Excrapy@2023'
-# EMAIL_PORT = 587
+STRIPE_PUBLISHABLE_KEY = STRIPE_PUBLISHABLE
+STRIPE_SECRET_KEY = STRIPE_SECRET
 
-
-STRIPE_PUBLISHABLE_KEY = 'pk_test_51I5Cg7A8dHHTBZppaME598N8pGskKkydRZhCAtroWn6OAkyKsEjKT8px7X6dCiDhwuXtBZNducGzoW4P1TDkg6l900m2ojEHyH'
-STRIPE_SECRET_KEY = 'sk_test_51I5Cg7A8dHHTBZpp2V1H66jOYkZILSjzlLB88oUVFCs8gXTfx5bD3U70PYRYvrnDeMD9biAHo8ISUKuoCCk6xx4n008YXEPTo5'
-
-BASIC_PRICE_ID = 'price_1KW4h9A8dHHTBZppUJH77xab'
-
-PREMIUM_PRICE_ID = 'price_1KW4hyA8dHHTBZppAKrBxZeA'
-ADVANCE_PRICE_ID = 'price_1KW4iWA8dHHTBZppyT57NmIi'
-
-
-# STRIPE_PUBLISHABLE_KEY = 'pk_live_51LqCG3JW4P2D9T5BRyNJs9LSD3E1NDvMjpUycUpFkEV2ekIO9CZeD4Xmg3pZLLbMVOyrjOauqzMuUvq2mBhmB9ei00du5zoL2a'
-# STRIPE_SECRET_KEY = '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'
-#
-# BASIC_PRICE_ID = 'prod_NChhmk4BCMj3Z1'
-#
-# PREMIUM_PRICE_ID = 'prod_NChioVxhibQWcA'
-# ADVANCE_PRICE_ID = 'prod_NChkG3WL6kkm8z'
-
-
+BASIC_PRICE_ID = BASIC_PRICE
+PREMIUM_PRICE_ID = PREMIUM_PRICE
+ADVANCE_PRICE_ID = ADVANCE_PRICE
 
 JAZZMIN_SETTINGS = {
     # title of the window (Will default to current_admin_site.site_title if absent or None)
