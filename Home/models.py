@@ -39,7 +39,7 @@ class User_Query(models.Model):
 class Country(models.Model):
     country = models.CharField(max_length=100)
     state = models.CharField(max_length=100,blank=True,null=True)
-    place = models.CharField(max_length=100,blank=True,null=True)
+    place = models.CharField(max_length=200,blank=True,null=True)
     zipcode = models.CharField(max_length=100,blank=True,null=True)
 
     def __str__(self):
