@@ -80,77 +80,36 @@ def index(request):
 
             selected_state = request.POST.get('selected_state')
             selected_places = request.POST.getlist('places')
-
-            print('Line no 88 selected address are:',selected_country, selected_state,selected_places)
-
-
-
             if activity == 'Select':
                 messages.error(request, 'Select Business Category')
                 return redirect('index')
-
-
-
-
             selected_items = 0
             search_keywords=[]
             if selected_places:
-
-
                 for data in selected_places:
-
                         place = Country.objects.filter(country=selected_country, place=data)
-                        print('line no 109', place)
                         if place:
-
                             for db_data in place:
-                                print('Line no 110', db_data.place, db_data.zipcode)
                                 selected_items += 1
                                 dict={}
-
                                 if db_data.zipcode != 'nan':
-                                    print('Search Keyword is:', db_data.zipcode.partition('.')[0] + ','+db_data.place+ ',' + selected_country)
-
-
                                     search_keywords.append(activity+ ' in '+ db_data.place+ ',' + selected_country)
-
                                 else:
-
                                     search_keywords.append(activity+ ' in '+ db_data.place+ ',' + selected_country)
-                print('search keyword list is:',search_keywords)
             else:
                 if not selected_state:
                     place = Country.objects.filter(country=selected_country)
-                    print('line no 128', place)
                     if place:
-
                         for db_data in place:
                             print('Line no 132', db_data.place, db_data.zipcode)
                             selected_items += 1
                             dict = {}
-
                             if db_data.zipcode != 'nan':
-                                print('Search Keyword is:',
-                                      db_data.zipcode.partition('.')[0] + ',' + db_data.place + ',' + selected_country)
-
                                 search_keywords.append(activity + ' in ' + db_data.place + ',' + selected_country)
-
                             else:
-
                                 search_keywords.append(activity + ' in ' + db_data.place + ',' + selected_country)
-
-
-
-
-
-
-
-
-
-
             sum_queries = selected_items * 15
             sum_rows = sum_queries * 20
-
             expected_price=sum_rows * current_active_plan_price
             expected_time_min=pd.to_timedelta(int(sum_queries), unit='m')
             expected_time_max=pd.to_timedelta(int(sum_queries*3), unit='m')
@@ -169,13 +128,7 @@ def index(request):
 
             context = {'few_lines': search_keywords, "num": sum_rows,'selected_items':selected_items,'expected_price':expected_price,'sum_queries':sum_queries,'user_profile':users,'user_wallet':user_wallet,'expected_time_min':expected_time_min,'expected_time_max':expected_time_max}
             return render(request, 'checkdata.html', context)
-
-        
-
-
-
-
-    return render(request, 'index.html',{'user_wallet':user_wallet,'countries':countries,'categories':categories,'user_profile':users})
+    return render(request, 'index.html', {'user_wallet':user_wallet,'countries':countries,'categories':categories,'user_profile':users})
 
 
 # add payment code here

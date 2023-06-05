@@ -6,9 +6,6 @@ from . import views
 
 
 urlpatterns=[
-
-
-
 path('index/', views.index, name='index'),
 path('get_data_option', views.get_data_option, name='get_data_option'),
 path('getdata', views.getdata, name='getdata'),
