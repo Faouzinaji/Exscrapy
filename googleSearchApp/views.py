@@ -347,8 +347,8 @@ def pay_as_go(request, expected_price):
 
 
 
-        success_url='http://localhost:8000/google_search/pay_as_go_success?session_id={CHECKOUT_SESSION_ID}',
-        cancel_url='https://exscrapy.herokuapp.com/plans/payment_cancel',
+        success_url=f'{request.build_absolute_uri("/")}'+'/google_search/pay_as_go_success?session_id={CHECKOUT_SESSION_ID}',
+        cancel_url=f'{request.build_absolute_uri("/")}'+'/plans/payment_cancel',
         #cancel_url='http://127.0.0.1:8000/plans/payment_cancel',
 
         client_reference_id=expected_price
