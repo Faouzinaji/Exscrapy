@@ -73,8 +73,8 @@ def checkout_session(request, plan_id):
         }],
 
         mode='subscription',
-        success_url=f'{request.build_absolute_uri("/")}'+'/plans/payment_success?session_id={CHECKOUT_SESSION_ID}',
-        cancel_url=f'{request.build_absolute_uri("/")}'+'/plans/payment_cancel',
+        success_url=f'{request.build_absolute_uri("/")}'+'plans/payment_success?session_id={CHECKOUT_SESSION_ID}',
+        cancel_url=f'{request.build_absolute_uri("/")}'+'plans/payment_cancel',
 
         client_reference_id=plan_id
 
