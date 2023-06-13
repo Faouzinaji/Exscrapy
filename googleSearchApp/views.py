@@ -61,6 +61,8 @@ def send_mail(strValue,to_email):
     smtp_obj.sendmail(msg['From'], msg['To'], msg.as_string())
     smtp_obj.quit()
     return None
+
+
 def index(request):
     users = Profile.objects.get(owner__email=request.user.email)
     user_wallet = Wallet.objects.get(user_id=users)
@@ -77,7 +79,6 @@ def index(request):
             activity = request.POST.get('activity')
             query_reference = request.POST.get('query_reference')
             selected_country = request.POST.get('selected_country')
-
             selected_state = request.POST.get('selected_state')
             selected_places = request.POST.getlist('places')
             if activity == 'Select':
@@ -86,48 +87,31 @@ def index(request):
             selected_items = 0
             search_keywords=[]
             if selected_places:
-                for data in selected_places:
-                        place = Country.objects.filter(country=selected_country, place=data)
-                        if place:
-                            for db_data in place:
-                                selected_items += 1
-                                dict={}
-                                if db_data.zipcode != 'nan':
-                                    search_keywords.append(activity+ ' in '+ db_data.place+ ',' + selected_country)
-                                else:
-                                    search_keywords.append(activity+ ' in '+ db_data.place+ ',' + selected_country)
+                for db_data in selected_places:
+                    selected_items += 1
+                    search_keywords.append(activity+ ' in '+ db_data+ ',' + selected_country)
             else:
-                if not selected_state:
+                if not selected_state and selected_country:
                     place = Country.objects.filter(country=selected_country)
                     if place:
                         for db_data in place:
-                            print('Line no 132', db_data.place, db_data.zipcode)
+                            print(f"place====== {place}, db_data ========={db_data}")
                             selected_items += 1
-                            dict = {}
-                            if db_data.zipcode != 'nan':
-                                search_keywords.append(activity + ' in ' + db_data.place + ',' + selected_country)
-                            else:
-                                search_keywords.append(activity + ' in ' + db_data.place + ',' + selected_country)
+                            search_keywords.append(activity + ' in ' + db_data.place + ',' + selected_country)
             sum_queries = selected_items * 15
             sum_rows = sum_queries * 20
             expected_price=sum_rows * current_active_plan_price
             expected_time_min=pd.to_timedelta(int(sum_queries), unit='m')
             expected_time_max=pd.to_timedelta(int(sum_queries*3), unit='m')
 
-
-
             request.session['search_keyword'] = search_keywords
-
             request.session['activity'] = activity
             request.session['query_reference'] = query_reference
-
-
             request.session['received_record'] = sum_queries
             request.session['expected_price'] = expected_price
-
-
             context = {'few_lines': search_keywords, "num": sum_rows,'selected_items':selected_items,'expected_price':expected_price,'sum_queries':sum_queries,'user_profile':users,'user_wallet':user_wallet,'expected_time_min':expected_time_min,'expected_time_max':expected_time_max}
             return render(request, 'checkdata.html', context)
+            # return render(request, 'index.html', {'user_wallet':user_wallet,'countries':countries,'categories':categories,'user_profile':users})
     return render(request, 'index.html', {'user_wallet':user_wallet,'countries':countries,'categories':categories,'user_profile':users})
 
 
@@ -349,8 +333,6 @@ def pay_as_go(request, expected_price):
 
         success_url=f'{request.build_absolute_uri("/")}'+'google_search/pay_as_go_success?session_id={CHECKOUT_SESSION_ID}',
         cancel_url=f'{request.build_absolute_uri("/")}'+'plans/payment_cancel',
-        #cancel_url='http://127.0.0.1:8000/plans/payment_cancel',
-
         client_reference_id=expected_price
 
     )
