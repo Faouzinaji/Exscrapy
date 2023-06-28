@@ -104,7 +104,6 @@
         <!-- Sidebar Menu -->
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="true">
-
                 <li class="nav-item">
                     <a href="{% url 'dashboard' %}" class="nav-link">
                         <i class="fas fa-home"></i>
@@ -113,7 +112,14 @@
                         </p>
                     </a>
                 </li>
-
+                <li class="nav-item">
+                    <a href="{% url 'profile' request.user.pk %}" class="nav-link">
+                        <i class="fa fa-user" aria-hidden="true"></i>
+                        <p>
+                            Profile
+                        </p>
+                    </a>
+                </li>
                 <li class="nav-item">
                     <a href="{% url 'pricing' %}" class="nav-link">
 
