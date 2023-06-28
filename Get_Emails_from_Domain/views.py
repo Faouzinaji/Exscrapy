@@ -209,8 +209,8 @@ def pay_as_go_get_email_from_domain(request,expected_price):
         }],
         mode='payment',
 
-        success_url='http://127.0.0.1:8000/get_emails/pay_as_go_get_email_from_domain_success?session_id={CHECKOUT_SESSION_ID}',
-        cancel_url='http://127.0.0.1:8000/plans/payment_cancel',
+        success_url=f'{request.build_absolute_uri("/")}'+'get_emails/pay_as_go_get_email_from_domain_success?session_id={CHECKOUT_SESSION_ID}',
+        cancel_url=f'{request.build_absolute_uri("/")}'+'plans/payment_cancel',
 
         client_reference_id=generated_record_email
 
