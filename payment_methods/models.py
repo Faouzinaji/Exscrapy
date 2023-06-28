@@ -22,9 +22,6 @@ class Price_plan(models.Model):
         verbose_name_plural = 'Price Plans'
 
 
-
-
-
 class Subscriber(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     plan = models.ForeignKey(Price_plan, on_delete=models.CASCADE, null=True)
