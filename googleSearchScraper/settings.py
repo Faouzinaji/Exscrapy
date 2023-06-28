@@ -40,7 +40,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
-'jazzmin',
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -57,6 +57,8 @@ INSTALLED_APPS = [
     'Get_Emails_from_Domain'
 ]
 
+SOCIAL_AUTH_JSONFIELD_ENABLED = True
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
@@ -66,6 +68,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
     'social_django.middleware.SocialAuthExceptionMiddleware',  # <-- Here
 ]
 
@@ -82,19 +85,19 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+
                 'social_django.context_processors.backends',  # <-- Here
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
 ]
 
 WSGI_APPLICATION = 'googleSearchScraper.wsgi.application'
+
 AUTHENTICATION_BACKENDS = (
     'social_core.backends.google.GoogleOAuth2',
     'social_core.backends.facebook.FacebookOAuth2',
-
-
-
     'django.contrib.auth.backends.ModelBackend',
 )
 
@@ -105,19 +108,21 @@ LOGIN_REDIRECT_URL = 'dashboard'
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = "268907281420-e8f3egpcid35usei3qemf6hpl9fh7c4g.apps.googleusercontent.com"
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = "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"
+# SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = "268907281420-e8f3egpcid35usei3qemf6hpl9fh7c4g.apps.googleusercontent.com"
+# SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = "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"
 
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = "245695792269-9c14e65sfe7jbrlss1dci987kir2aki1.apps.googleusercontent.com"
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = "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"
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
 
 DATA_UPLOAD_MAX_NUMBER_FIELDS = None
-DATABASES = DATABASES
+# DATABASES = DATABASES
 
 
 # db_from_env = dj_database_url.config(conn_max_age=600)
