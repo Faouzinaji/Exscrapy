@@ -147,138 +147,72 @@ def  getdatabycsv(request):
         if received_record < user_wallet.available_requests_balance:
             data_dic=[]
             for item in search_keyword:
-                print('Line no 173 ====================================',item)
                 params = {
                         "engine": "google_maps",
                         "q": item,
                         "type": "search",
-                         "start": 0,
+                        "start": 0,
                         "ll": "@40.7455096,-74.0083012,14z",
                         "api_key":"589c12eaa768b8bfbf721ffb8961347436051c017b86335a7d6f0e1e498fb2e4"
 
                         }
                 client = GoogleSearch(params)
                 data = client.get_dict()
-                for result in data['local_results']:
-                    try:
-                        title = result['title']
-                    except:
-                        title = "Not Available"
-                    try:
-                        address = result['address']
-                    except:
-                        address = "Not Available"
-                    try:
-                        rating = result['rating']
-                    except:
-                        rating = "Not Available"
-                    try:
-                        reviews = result['reviews']
-                    except:
-                        reviews = "Not Available"
-                    try:
-                        type_search = result['type']
-                    except:
-                        type_search = "Not Available"
-                    try:
-                        open_state = result['open_state']
-                    except:
-                        open_state = "Not Available"
-                    try:
-                        phone = result['phone']
-                    except:
-                        phone = "Not Available"
-                    try:
-                        website = result['website']
-                    except:
-                        website = "Not Available"
-                    try:
-                        description = result['description']
-                    except:
-                        description = "Not Available"
-                    dict = {
-                        "Bussines Type": type_search,
-                        "Bussines Name": title,
-                        "Bussines Description": description,
-                        "Bussines Address": address,
-                        "Bussines Hours ": open_state,
-                        "Bussines Phone ": phone,
-                        "Bussines Website ": website,
-                        "Bussines Rating": rating,
-                        "Bussines Reviews": reviews,
-                    }
-                    data_dic.append(dict)
-
-
-
-
                 try:
-                    while ('next' in data['serpapi_pagination']):
-                        client.params_dict["start"] += len(data['local_results'])
-                        data = client.get_dict()
-                        print('Line no 201 fetched record is:', data['local_results'])
-                        print('Line no 202 done.')
+                    for result in data['local_results']:
+                        print("Get local results =================")
                         try:
-                            for result in data['local_results']:
-                                try:
-                                    print('Line no 205',result['title'])
-                                    title=result['title']
-                                except:
-                                    title="Not Available"
-                                try:
-                                    address=result['address']
-                                except:
-                                    address="Not Available"
-                                try:
-                                    rating=result['rating']
-                                except:
-                                    rating="Not Available"
-                                try:
-                                    reviews=result['reviews']
-                                except:
-                                    reviews="Not Available"
-                                try:
-                                    type_search=result['type']
-                                except:
-                                    type_search="Not Available"
-                                try:
-                                    open_state=result['open_state']
-                                except:
-                                    open_state="Not Available"
-                                try:
-                                    phone=result['phone']
-                                except:
-                                    phone="Not Available"
-                                try:
-                                    website=result['website']
-                                except:
-                                    website="Not Available"
-                                try:
-                                    description=result['description']
-                                except:
-                                    description="Not Available"
-                                dict = {
-                                    "Bussines Type": type_search,
-                                    "Bussines Name": title,
-                                    "Bussines Description": description,
-                                    "Bussines Address": address,
-                                    "Bussines Hours ": open_state,
-                                    "Bussines Phone ": phone,
-                                    "Bussines Website ": website,
-                                    "Bussines Rating": rating,
-                                    "Bussines Reviews": reviews,
-                                }
-                                data_dic.append(dict)
+                            title = result['title']
+                        except:
+                            title = "Not Available"
+                        try:
+                            address = result['address']
+                        except:
+                            address = "Not Available"
+                        try:
+                            rating = result['rating']
+                        except:
+                            rating = "Not Available"
+                        try:
+                            reviews = result['reviews']
+                        except:
+                            reviews = "Not Available"
+                        try:
+                            type_search = result['type']
+                        except:
+                            type_search = "Not Available"
+                        try:
+                            open_state = result['open_state']
+                        except:
+                            open_state = "Not Available"
+                        try:
+                            phone = result['phone']
+                        except:
+                            phone = "Not Available"
+                        try:
+                            website = result['website']
+                        except:
+                            website = "Not Available"
+                        try:
+                            description = result['description']
+                        except:
+                            description = "Not Available"
+                        dict = {
+                            "Bussines Type": type_search,
+                            "Bussines Name": title,
+                            "Bussines Description": description,
+                            "Bussines Address": address,
+                            "Bussines Hours ": open_state,
+                            "Bussines Phone ": phone,
+                            "Bussines Website ": website,
+                            "Bussines Rating": rating,
+                            "Bussines Reviews": reviews,
+                        }
+                        data_dic.append(dict)
 
-                        except Exception as e:
-                            print('Exception at line no 243 is',e)
-                            pass
                 except Exception as e:
                         print('Exception at line no 247 is', e)
-
                         pass
-
-            print('Line no 250 Received Records:',data_dic)
 
             df = pd.DataFrame(data_dic)
             now = datetime.now()
@@ -286,27 +220,21 @@ def  getdatabycsv(request):
             filename=str(current_time)+"_bussinesslist.csv"
             df.to_csv(filename,index=False)
 
-
-            send_mail(filename, request.user.email)
-
-
+            # send_mail(filename, "rayhunkhan27@gmail.com")
 
             user_wallet.available_requests_balance-=received_record
             user_wallet.save()
 
             with open(filename, 'rb') as file:
-
-                User_Query.objects.create(user_id=request.user, category=activity,no_of_records_limit=received_record,query_type='Locations',query_name=query_reference,
-                                          query_list=json.dumps(search_keyword), output_file=File(file)).save()
-
-
-
-
+                User_Query.objects.create(
+                    user_id=request.user, category=activity, 
+                    no_of_records_limit=received_record, query_type='Locations',
+                    query_name=query_reference,
+                    query_list=json.dumps(search_keyword), output_file=File(file)
+                )
             messages.error(request, 'Your requested file is ready and you can download on dashboard.')
-
             return redirect('dashboard')
         else:
-
             return render(request,'pay_as_go.html',{'counter_pages':received_record, 'expected_price':int(expected_price),'user_wallet':user_wallet,'user_profile':user_profile})
 
 
