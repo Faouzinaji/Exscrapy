@@ -1,22 +1,21 @@
 import os
-
+from typing import Any
+from django.conf import settings
+from django.db.models import Sum
+from django.views.generic import DetailView
 from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from authentication.models import Profile
 from django.contrib import auth, messages
-from django.core.mail import send_mail, EmailMessage, EmailMultiAlternatives
+from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
-from django.core.files import File
-from .models import *
-from django.conf import settings
-import pandas as pd
-# Create your views here.
 
+from payment_methods.models import Subscriber
+from .models import *
 
 
 def dashboard(request):
@@ -74,6 +73,25 @@ def dashboard(request):
         # msg.send()
 
         return redirect('dashboard')
+
+
+class UserProfileView(DetailView):
+    template_name = 'profile.html'
+    model = User
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user = self.model.objects.get(pk=self.kwargs["pk"])
+        subscriber = user.subscriber_set.all()
+        available = user.profile.wallet_set.all().last().available_requests_balance
+        no_of_lines = subscriber.aggregate(Sum('plan__no_of_lines'))['plan__no_of_lines__sum']
+        spent = int(no_of_lines) - int(available)
+        context['user'] = user
+        context['spent'] = spent
+        context['no_of_lines'] = no_of_lines
+        context['subscriber'] = subscriber.last()
+        context['all_subscriber'] = subscriber.order_by('status')
+        return context
 
 
 @login_required(login_url='Login')
@@ -152,12 +170,6 @@ def setting_security(request):
                 login(request, user)
                 messages.info(request, 'Password updated successfully.')
                 return redirect('pricing')
-
-
-
-
-
-
     else:
 
         return render(request, 'settings-security.html', context)
@@ -169,12 +181,6 @@ def contact_us(request):
     if users.changed_default_password == 'No':
         return redirect('setting_security')
 
-
-
-
-
-
-
     if request.method == 'POST':
         name = request.POST.get('name')
         email = request.POST.get('email')
@@ -182,14 +188,15 @@ def contact_us(request):
         subject = request.POST.get('subject')
         message = request.POST.get('message')
         user_email = []
-        user_email.append('adnanrafique340@gmail.com')
+        user_email.append(request.user.email)
 
-        html_content = render_to_string('email_template_contact_us.html',
-                                        {'name': name, 'email': email, 'subject': subject, 'message': message
-                                         })
+        html_content = render_to_string(
+            'email_template_contact_us.html',
+            {'name': name, 'email': email, 'subject': subject, 'message': message}
+        )
         text_content = strip_tags(html_content)
 
-        msg = EmailMultiAlternatives(subject, text_content, 'adnanrafique340@gmail.com', user_email)
+        msg = EmailMultiAlternatives(subject, text_content, settings.EMAIL_HOST_USER, user_email)
         msg.attach_alternative(html_content, "text/html")
         msg.send()
         messages.info(request, 'Email sent Successfully. Admin will contact you soon.')
@@ -198,19 +205,3 @@ def contact_us(request):
     context = {'user_profile': users,'user_wallet':user_wallet}
 
     return render(request, 'contact_us.html', context)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
