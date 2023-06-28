@@ -1,0 +1,179 @@
+{% extends 'base2.html' %}
+{% load static %}
+
+{% block title %}
+    Profile
+{% endblock %}
+{% block content %}
+<style>
+    .img{
+        text-align: center;
+    }
+    .img img{
+        border: 2px solid black;
+        border-radius: 50%;
+    }
+    .custom-button{
+        background: rgb(221, 221, 221);
+        padding: 2px 5px;
+        color: #3d3d3d;
+        font-size: 10px;
+    }
+    .active-button{
+        background: #01962e;
+        padding: 2px 5px;
+        color: #e9e9e9;
+        font-size: 10px;
+    }
+    .cancel-button{
+        background: #dde001;
+        padding: 2px 5px;
+        color: #1f1f1f;
+        font-size: 10px;
+    }
+    .expire-button{
+        background: #e01001;
+        padding: 2px 5px;
+        color: #f1f1f1;
+        font-size: 10px;
+    }
+    .info p{
+        font-size: 14px !important;
+        margin-bottom: 4px !important;
+    }
+</style>
+<body class="hold-transition light-mode sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
+    <div class="wrapper">
+        <div class="content-wrapper">
+            <!-- Main content -->
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-3 mt-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="img">
+                                        {% if request.user.profile.picture %}
+                                        <img class="w-50" src="{{ request.user.profile.picture.url }}" alt="">
+                                        {% else %}
+                                        <img class="w-50" src="{% static 'assets/img/team/1.png' %}" alt="">
+                                        {% endif %}
+                                    </div>
+                                    <div class="text text-center mt-2">
+                                        <p>{{ request.user.profile.profession }}</p>
+                                        <h5>{{ request.user.get_full_name }}</h5>
+                                    </div>
+                                    <div class="info">
+                                        <p>Active Plan 
+                                            <button class="btn btn-sm custom-button float-right">{{ subscriber.plan.title }}</button>
+                                        </p>
+                                        <p>Total Request 
+                                            <button class="btn btn-sm custom-button float-right">{{ no_of_lines }}</button>
+                                        </p>
+                                        <p>Spent 
+                                            <button class="btn btn-sm custom-button float-right">{{ spent }}</button>
+                                        </p>
+                                        <p>Available
+                                            <button class="btn btn-sm custom-button float-right">{{ user.profile.wallet_set.last.available_requests_balance }}</button>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-9 mt-3">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="title text-center">User Information</h5>
+                                </div>
+                                <div class="card-body">
+                                    <table class="table table-bordered">
+                                        <tr>
+                                            <th>First Name</th>
+                                            <td>{{ request.user.first_name }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Last Name</th>
+                                            <td>{{ request.user.last_name }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Email</th>
+                                            <td>{{ request.user.email }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Phone</th>
+                                            <td>{% if request.user.profile.phone %}
+                                                {{ request.user.profile.phone }}
+                                                {% else %}
+                                                ---
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Gender</th>
+                                            <td>{% if request.user.profile.gender %}
+                                                {{ request.user.profile.gender }}
+                                                {% else %}
+                                                ---
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Username</th>
+                                            <td>{% if request.user.username %}
+                                                {{ request.user.username }}
+                                                {% else %}
+                                                ---
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="title text-center">User Subscription History</h5>
+                                </div>
+                                <div class="card-body">
+                                    <table class="table table-bordered">
+                                        <tr>
+                                            <th>Plan Name</th>
+                                            <th>Payment Method</th>
+                                            <th>Price</th>
+                                            <th>Start</th>
+                                            <th>End</th>
+                                            <th>Status</th>
+                                        </tr>
+                                        {% for obj in all_subscriber %}
+                                        <tr>
+                                            <td>{{ obj.plan.title }}</td>
+                                            <td>{{ obj.payment_method }}</td>
+                                            <td>${{ obj.price }}</td>
+                                            <td>{{ obj.subsciption_from }}</td>
+                                            <td>{{ obj.subsciption_to }}</td>
+                                            <td>
+                                                {% if obj.status == "Active" %}
+                                                <button class="btn btn-sm active-button">Active</button>
+                                                {% elif obj.status == "Cancel" %}
+                                                <button class="btn btn-sm cancel-button">Cancel</button>
+                                                {% elif obj.status == "Expire" %}
+                                                <button class="btn btn-sm expire-button">Expire</button>
+                                                {% else %}
+                                                {{ obj.status }}
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.container-fluid -->
+            </section>
+            <!-- /.content -->
+        </div>
+    </div>
+</body>
+{% endblock %}
+
