@@ -132,15 +132,8 @@ LOGIN_REDIRECT_URL = 'dashboard'
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = "245695792269-9c14e65sfe7jbrlss1dci987kir2aki1.apps.googleusercontent.com"
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = "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"
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
-
 DATA_UPLOAD_MAX_NUMBER_FIELDS = None
-# DATABASES = DATABASES
+DATABASES = DATABASES
 
 
 # db_from_env = dj_database_url.config(conn_max_age=600)
