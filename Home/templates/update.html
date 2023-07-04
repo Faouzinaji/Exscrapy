@@ -1,0 +1,61 @@
+{% extends 'base2.html' %}
+{% load static widget_tweaks %}
+
+{% block title %}
+    Update Profile
+{% endblock %}
+{% block content %}
+<style>
+    .content-wrapper{
+        background: #fff !important;
+    }
+</style>
+<body class="hold-transition light-mode sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
+    <div class="wrapper">
+        <div class="content-wrapper">
+            <!-- Main content -->
+            <section class="content">
+                <div class="container-fluid">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label for="">Username</label>
+                                        <input type="text" class="form-control" value="{{ request.user }}" disabled>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="">Gmail</label>
+                                        <input type="text" class="form-control" value="{{ request.user.email }}" disabled>
+                                    </div>
+                                    <div class="col-lg-6 mt-3">
+                                        <label for="" class="" data-icon="u">Phone</label>
+                                        {% render_field form.phone placeholder="Enter Phone" class="form-control" %}
+                                    </div>
+                                    <div class="col-lg-6 mt-3">
+                                        <label for="" class="" data-icon="u">Gender</label>
+                                        {% render_field form.gender class="form-control" %}
+                                    </div>
+                                    <div class="col-lg-6 mt-3">
+                                        <label for="" class="" data-icon="u">Profession</label>
+                                        {% render_field form.profession placeholder="Enter Profession" class="form-control" %}
+                                    </div>
+                                    <div class="col-lg-6 mt-3">
+                                        <label for="" class="" data-icon="u">Picture</label>
+                                        {% render_field form.picture class="form-control-file" %}
+                                    </div>
+                                    <div class="col-md-12 mt-3">
+                                        <button type="submit" class="btn btn-success btn-sm w-100">Update</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </section>
+        </div>
+    </div>
+</body>
+{% endblock %}
+

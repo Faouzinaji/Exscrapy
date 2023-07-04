@@ -2,14 +2,14 @@ import os
 from typing import Any
 from django.conf import settings
 from django.db.models import Sum
-from django.views.generic import DetailView
-from django.contrib import messages
+from django.views.generic import DetailView, UpdateView
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from authentication.models import Profile
 from django.contrib import auth, messages
+from django.urls import reverse_lazy
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
@@ -73,6 +73,17 @@ def dashboard(request):
         # msg.send()
 
         return redirect('dashboard')
+
+
+class UpdateProfileView(UpdateView):
+    template_name = 'update.html'
+    model = Profile
+    fields = ['phone', 'picture', 'gender', 'profession']
+    success_url = reverse_lazy('dashboard')
+
+    def form_valid(self, form):
+        messages.success(self.request, "The profile was updated successfully.")
+        return super(UpdateProfileView,self).form_valid(form)
 
 
 class UserProfileView(DetailView):

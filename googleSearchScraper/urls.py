@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from googleSearchApp import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -25,7 +26,9 @@ urlpatterns = [
     path('dashboard/', include('Home.urls')),
     path('', include('authentication.urls')),
     path('get_emails/', include('Get_Emails_from_Domain.urls')),
-    path('social-auth/', include('social_django.urls', namespace='social')),  # <-- here
+    # path('social-auth/', include('social_django.urls', namespace='social')),  # <-- here
+    path("", include("allauth.urls")),
+    path('social/signup/', views.signup_redirect, name='signup_redirect'),
 
     path('plans/', include('payment_methods.urls')),
 ]

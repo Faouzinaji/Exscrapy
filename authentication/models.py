@@ -5,11 +5,20 @@ from django.contrib.auth.models import User
 from django.db import models
 
 
+GENDER = (
+    (1, "Mail"),
+    (2, "Femail"),
+)
+
+
 class Profile(models.Model):
     owner = models.OneToOneField(User, on_delete=models.CASCADE)
     phone = models.CharField(max_length=25, blank=True, null=True, verbose_name='Phone No')
     picture = models.ImageField(upload_to='ProfileImages', blank=True, verbose_name='Photo')
-    gender = models.CharField(max_length=25, blank=True, null=True, verbose_name='Gender')
+    gender = models.CharField(
+        choices=GENDER, max_length=25, blank=True, null=True,
+        verbose_name='Gender'
+    )
     profession = models.CharField(max_length=25, blank=True, null=True)
     otp = models.CharField(max_length=25, blank=True, null=True, verbose_name='OTP')
     changed_default_password = models.CharField(max_length=500, blank=True, default='No', null=True,verbose_name='Changed Default Password?')

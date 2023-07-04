@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load static %}
+{% load static socialaccount  %}
 {% block title %}
     Login
 {% endblock %}
@@ -47,10 +47,9 @@
         </div>
       </form>
   <div class="social-auth-links text-center mb-3">
-
-        <a href="{% url 'social:begin' 'google-oauth2' %}" class="btn btn-block btn-danger">
-          <i class="fab fa-google-plus mr-2"></i> Sign in using Google+
-        </a>
+    <a href="{% provider_login_url 'google'%}?next=/" class="btn btn-block btn-danger">
+      <i class="fab fa-google-plus mr-2"></i> Sign in using Google+
+    </a>
       </div>
 
       <!-- /.social-auth-links -->

@@ -54,9 +54,9 @@
                                 <div class="card-body">
                                     <div class="img">
                                         {% if request.user.profile.picture %}
-                                        <img class="w-50" src="{{ request.user.profile.picture.url }}" alt="">
+                                        <img style="height: 115px; width: 115px;" src="{{ request.user.profile.picture.url }}" alt="">
                                         {% else %}
-                                        <img class="w-50" src="{% static 'assets/img/team/1.png' %}" alt="">
+                                        <img style="height: 115px; width: 115px;" src="{% static 'assets/img/team/1.png' %}" alt="">
                                         {% endif %}
                                     </div>
                                     <div class="text text-center mt-2">
@@ -76,6 +76,9 @@
                                         <p>Available
                                             <button class="btn btn-sm custom-button float-right">{{ user.profile.wallet_set.last.available_requests_balance }}</button>
                                         </p>
+                                        <a href="{% url 'update_profile' user.pk %}" class="btn btn-sm btn-primary w-100 mt-2">
+                                            Information Update
+                                        </a>
                                     </div>
                                 </div>
                             </div>

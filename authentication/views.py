@@ -27,6 +27,8 @@ def send_email_otp(x,user_email,otp):
     return None
 
 def Login(request):
+    if request.user.is_authenticated:
+        return redirect('dashboard')
     if request.method == 'POST':
         email = request.POST.get('username')
         password = request.POST.get('password')

@@ -37,12 +37,6 @@ def send_mail(strValue,to_email):
     msg['To'] = to_email
     # Add body to email
     msg.attach(body_part)
-
-
-
-
-
-
     file_path = os.path.join(settings.BASE_DIR, strValue)
     print('line no 34 done')
     with open(file_path,'rb') as file:
@@ -55,9 +49,6 @@ def send_mail(strValue,to_email):
     smtp_obj.starttls()
     # Login to the server
     smtp_obj.login('adnanrafique340@gmail.com', 'gqivvfogakumclyd')
-
-
-
     smtp_obj.sendmail(msg['From'], msg['To'], msg.as_string())
     smtp_obj.quit()
     return None
@@ -133,7 +124,9 @@ def get_data_option(request):
     user_wallet = Wallet.objects.get(user_id=users)
     return render(request,'get_data_option.html',{'user_wallet':user_wallet})
 
-
+def signup_redirect(request):
+    messages.error(request, "Something wrong here, it may be that you already have account!")
+    return redirect("dashboard")
 
 def  getdatabycsv(request):
     user_profile=Profile.objects.get(owner=request.user)
@@ -599,7 +592,7 @@ def run_again_query(request,id):
         filename = str(current_time) + "_bussinesslist.csv"
         df.to_csv(filename, index=False)
 
-        # send_mail(filename, request.user.email)
+        send_mail(filename, request.user.email)
         user_wallet.available_requests_balance -= int(query_obj.no_of_records_limit)
         user_wallet.save()
 
@@ -688,7 +681,4 @@ def dropdown_get_state(request):
         print(len(data))
 
         return JsonResponse( {'data':data}, safe=False)
-
-
-
 
