@@ -18,6 +18,7 @@ from payment_methods.models import Subscriber
 from .models import *
 
 
+@login_required
 def dashboard(request):
     # print('line no 15', request.user.password,request.user.first_name,request.user.last_name,request.user.email,request.user.username)
     try:
@@ -114,10 +115,6 @@ def Setting(request):
 
     if user_profile.changed_default_password == 'No':
         return redirect('setting_security')
-
-
-
-
     context = {'user_profile': user_profile, 'users': users,'user_wallet':user_wallet}
     if request.method == 'POST':
         fname = request.POST.get('firstname')
@@ -159,9 +156,6 @@ def Setting(request):
 @login_required(login_url='Login')
 def setting_security(request):
     user_profile = Profile.objects.get(owner=request.user)
-
-
-
     context = {'user_profile': user_profile}
     if request.method == 'POST':
         users = User.objects.get(email=request.user.email)
