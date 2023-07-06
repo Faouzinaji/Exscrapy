@@ -4,10 +4,9 @@ from payment_methods.models import *
 from django.conf import settings
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
-import random
+from django.contrib.auth.decorators import login_required
 import pandas as pd
 from django.views.decorators.csrf import csrf_exempt
-from selenium import webdriver
 import pandas as pd 
 from datetime import datetime
 from serpapi import GoogleSearch
@@ -24,16 +23,16 @@ import smtplib
 from Home.models import *
 import stripe
 from django.conf import settings
-from django.core.paginator import Paginator
 from .models import *
+from django.core.mail import EmailMessage
 
 
-def send_mail(strValue,to_email):
+def send_mail(strValue, to_email):
     # Create a multipart message
     msg = MIMEMultipart()
     body_part = MIMEText('Requested Business Data', 'plain')
     msg['Subject'] = 'Business Data'
-    msg['From'] = 'adnanrafique340@gmail.com'
+    msg['From'] = 'no_reply@exscrapy.com'
     msg['To'] = to_email
     # Add body to email
     msg.attach(body_part)
@@ -45,15 +44,16 @@ def send_mail(strValue,to_email):
 
     # Create SMTP object
 
-    smtp_obj = smtplib.SMTP('smtp.gmail.com', 587)
+    smtp_obj = smtplib.SMTP('mail.exscrapy.com', 587)
     smtp_obj.starttls()
     # Login to the server
-    smtp_obj.login('adnanrafique340@gmail.com', 'gqivvfogakumclyd')
+    smtp_obj.login('no_reply@exscrapy.com', 'Excrapy@2023')
     smtp_obj.sendmail(msg['From'], msg['To'], msg.as_string())
     smtp_obj.quit()
     return None
 
 
+@login_required
 def index(request):
     users = Profile.objects.get(owner__email=request.user.email)
     user_wallet = Wallet.objects.get(user_id=users)
@@ -106,7 +106,7 @@ def index(request):
     return render(request, 'index.html', {'user_wallet':user_wallet,'countries':countries,'categories':categories,'user_profile':users})
 
 
-# add payment code here
+@login_required
 def getdata(request):
     if request.method == 'POST':
         promocode_list = ["1212121" , "222222" ]
@@ -119,16 +119,21 @@ def getdata(request):
         return render(request, 'getData.html')              
     return render(request, 'index.html')
 
+
+@login_required
 def get_data_option(request):
     users = Profile.objects.get(owner__email=request.user.email)
     user_wallet = Wallet.objects.get(user_id=users)
     return render(request,'get_data_option.html',{'user_wallet':user_wallet})
 
+
 def signup_redirect(request):
     messages.error(request, "Something wrong here, it may be that you already have account!")
     return redirect("dashboard")
 
-def  getdatabycsv(request):
+
+@login_required
+def getdatabycsv(request):
     user_profile=Profile.objects.get(owner=request.user)
     user_wallet=Wallet.objects.get(user_id=user_profile)
     if request.method == 'POST':
@@ -213,7 +218,7 @@ def  getdatabycsv(request):
             filename=str(current_time)+"_bussinesslist.csv"
             df.to_csv(filename,index=False)
 
-            # send_mail(filename, "rayhunkhan27@gmail.com")
+            send_mail(filename, "rayhunkhan27@gmail.com")
 
             user_wallet.available_requests_balance-=received_record
             user_wallet.save()
@@ -231,7 +236,7 @@ def  getdatabycsv(request):
             return render(request,'pay_as_go.html',{'counter_pages':received_record, 'expected_price':int(expected_price),'user_wallet':user_wallet,'user_profile':user_profile})
 
 
-
+@login_required
 def pay_as_go(request, expected_price):
     stripe.api_key = settings.STRIPE_SECRET_KEY
 
@@ -250,8 +255,6 @@ def pay_as_go(request, expected_price):
         }],
         mode='payment',
 
-
-
         success_url=f'{request.build_absolute_uri("/")}'+'google_search/pay_as_go_success?session_id={CHECKOUT_SESSION_ID}',
         cancel_url=f'{request.build_absolute_uri("/")}'+'plans/payment_cancel',
         client_reference_id=expected_price
@@ -261,8 +264,7 @@ def pay_as_go(request, expected_price):
     return redirect(session.url, code=303)
 
 
-
-
+@login_required
 def pay_as_go_success(request):
 
         session = stripe.checkout.Session.retrieve(request.GET['session_id'])
@@ -285,7 +287,6 @@ def pay_as_go_success(request):
                 "start": 0,
                 "ll": "@40.7455096,-74.0083012,14z",
                 "api_key": "589c12eaa768b8bfbf721ffb8961347436051c017b86335a7d6f0e1e498fb2e4"
-                # "api_key": "32acf64a76bfa3ba6e97b9981c565c731b558096aab97aa3a4a41ba445f98b52"
             }
             client = GoogleSearch(params)
             data = client.get_dict()
@@ -342,90 +343,13 @@ def pay_as_go_success(request):
             except Exception as e:
                 print(e)
 
-
-            try:
-                while ('next' in data['serpapi_pagination']):
-
-
-                    client.params_dict["start"] += len(data['local_results'])
-                    print('Line no 370 done')
-
-                    data = client.get_dict()
-
-
-                    print('Line no 355 fetched record is:',data['local_results'])
-                    try:
-                        for result in data['local_results']:
-
-                            try:
-                                print('Line no 359 is:',result['title'])
-                                title=result['title']
-                            except:
-                                title="Not Available"
-                            try:
-                                address=result['address']
-
-                            except:
-                                address="Not Available"
-                            try:
-                                rating=result['rating']
-                            except:
-                                rating="Not Available"
-                            try:
-                                reviews=result['reviews']
-                            except:
-                                reviews="Not Available"
-                            try:
-                                type_search=result['type']
-                            except:
-                                type_search="Not Available"
-                            try:
-                                open_state=result['open_state']
-                            except:
-                                open_state="Not Available"
-                            try:
-                                phone=result['phone']
-                            except:
-                                phone="Not Available"
-                            try:
-                                website=result['website']
-                            except:
-                                website="Not Available"
-                            try:
-                                description=result['description']
-                            except:
-                                description="Not Available"
-                            dict = {
-                                "Bussines Type": type_search,
-                                "Bussines Name": title,
-                                "Bussines Description": description,
-                                "Bussines Address": address,
-                                "Bussines Hours ": open_state,
-                                "Bussines Phone ": phone,
-                                "Bussines Website ": website,
-                                "Bussines Rating": rating,
-                                "Bussines Reviews": reviews,
-                            }
-                            data_dic.append(dict)
-                            print('Line no 425 done')
-                    except Exception as e:
-                        print('Line no 427 exception is',e)
-                        pass
-            except Exception as e:
-                print('Line no 430 exception is', e)
-                pass
-
-        print('Line no 409 Received Records:', data_dic)
-
         df = pd.DataFrame(data_dic)
         now = datetime.now()
         current_time = now.strftime("%d_%m_%Y_%H_%M_%S")
         filename = str(current_time) + "_bussinesslist.csv"
         df.to_csv(filename, index=False)
 
-        # send_mail(filename, request.user.email)
-
-
+        send_mail(filename, request.user.email)
 
         with open(filename, 'rb') as file:
 
@@ -438,23 +362,16 @@ def pay_as_go_success(request):
         return redirect('dashboard')
 
 
-def run_again_query(request,id):
+@login_required
+def run_again_query(request, id):
     user_profile = Profile.objects.get(owner=request.user)
     user_wallet = Wallet.objects.get(user_id=user_profile)
-
-
-
     query_obj=User_Query.objects.get(pk=id)
-
     if query_obj.no_of_records_limit < user_wallet.available_requests_balance:
-
-
-
         jsonDec = json.decoder.JSONDecoder()
         myPythonList = jsonDec.decode(query_obj.query_list)
         data_dic = []
         for item in myPythonList:
-
             params = {
                 "engine": "google_maps",
                 "q": item,
@@ -465,65 +382,10 @@ def run_again_query(request,id):
             }
             client = GoogleSearch(params)
             data = client.get_dict()
-            for result in data['local_results']:
-
-                try:
-                    print('Line no 596', result['title'])
-                    title = result['title']
-                except:
-                    title = "Not Available"
-                try:
-                    address = result['address']
-                except:
-                    address = "Not Available"
-                try:
-                    rating = result['rating']
-                except:
-                    rating = "Not Available"
-                try:
-                    reviews = result['reviews']
-                except:
-                    reviews = "Not Available"
-                try:
-                    type_search = result['type']
-                except:
-                    type_search = "Not Available"
-                try:
-                    open_state = result['open_state']
-                except:
-                    open_state = "Not Available"
-                try:
-                    phone = result['phone']
-                except:
-                    phone = "Not Available"
-                try:
-                    website = result['website']
-                except:
-                    website = "Not Available"
-                try:
-                    description = result['description']
-                except:
-                    description = "Not Available"
-                dict = {
-                    "Bussines Type": type_search,
-                    "Bussines Name": title,
-                    "Bussines Description": description,
-                    "Bussines Address": address,
-                    "Bussines Hours ": open_state,
-                    "Bussines Phone ": phone,
-                    "Bussines Website ": website,
-                    "Bussines Rating": rating,
-                    "Bussines Reviews": reviews,
-                }
-                data_dic.append(dict)
-
-
             try:
                 while ('next' in data['serpapi_pagination']):
                     client.params_dict["start"] += len(data['local_results'])
                     data = client.get_dict()
-                    print('Line no 599 fetched record is:', data['local_results'])
-                    print('Line no 600 done.')
                     try:
                         for result in data['local_results']:
                             try:
@@ -575,17 +437,10 @@ def run_again_query(request,id):
                                 "Bussines Reviews": reviews,
                             }
                             data_dic.append(dict)
-
                     except Exception as e:
-                        print('Exception at line no 654 is', e)
                         pass
             except Exception as e:
-                print('Exception at line no 708 is', e)
-
                 pass
-
-        print('Line no 712 Received Records:', data_dic)
-
         df = pd.DataFrame(data_dic)
         now = datetime.now()
         current_time = now.strftime("%d_%m_%Y_%H_%M_%S")
