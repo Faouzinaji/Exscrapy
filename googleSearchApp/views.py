@@ -40,7 +40,7 @@ def send_mail(strValue, to_email):
     # Attach the file with filename to the email
         msg.attach(MIMEApplication(file.read(), Name=strValue))
 
-    smtp_obj = smtplib.SMTP('mail51.lwspanel.com', 587)
+    smtp_obj = smtplib.SMTP('mail.exscrapy.com', 587)
     smtp_obj.starttls()
     # Login to the server
     smtp_obj.login('no_reply@exscrapy.com', 'Excrapy@2023')

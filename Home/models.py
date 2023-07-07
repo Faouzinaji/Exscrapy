@@ -19,21 +19,16 @@ class Wallet(models.Model):
 class User_Query(models.Model):
 
     user_id = models.ForeignKey(User,on_delete=models.CASCADE)
-
-
-
     category = models.CharField(max_length=2000,null=True, blank=True)
     query_type = models.CharField(max_length=2000,null=True, blank=True)
     country = models.CharField(max_length=2000,null=True, blank=True)
     no_of_records_limit = models.IntegerField(null=True, blank=True)
-
     locations = models.CharField(max_length=2000,null=True, blank=True)
     query_list = models.TextField(max_length=25000,null=True, blank=True)
     query_name = models.CharField(max_length=2000,null=True, blank=True)
     output_file = models.FileField(max_length=25000,upload_to='scrapped_files', blank=True,null=True, verbose_name='Scrapped Files')
     inserted_on = models.DateField(default=now,null=True, blank=True)
     updated_on = models.DateField(default=now,null=True, blank=True)
-
 
 
 class Country(models.Model):
