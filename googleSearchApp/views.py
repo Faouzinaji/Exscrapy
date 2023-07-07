@@ -1,7 +1,7 @@
 import json
 import os
 from payment_methods.models import *
-from django.conf import settings
+from googleSearchScraper import settings
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
@@ -22,9 +22,7 @@ from email.mime.text import MIMEText
 import smtplib
 from Home.models import *
 import stripe
-from django.conf import settings
 from .models import *
-from django.core.mail import EmailMessage
 
 
 def send_mail(strValue, to_email):
@@ -42,9 +40,7 @@ def send_mail(strValue, to_email):
     # Attach the file with filename to the email
         msg.attach(MIMEApplication(file.read(), Name=strValue))
 
-    # Create SMTP object
-
-    smtp_obj = smtplib.SMTP('mail.exscrapy.com', 587)
+    smtp_obj = smtplib.SMTP('mail51.lwspanel.com', 587)
     smtp_obj.starttls()
     # Login to the server
     smtp_obj.login('no_reply@exscrapy.com', 'Excrapy@2023')
@@ -158,7 +154,6 @@ def getdatabycsv(request):
                 data = client.get_dict()
                 try:
                     for result in data['local_results']:
-                        print("Get local results =================")
                         try:
                             title = result['title']
                         except:
@@ -218,7 +213,7 @@ def getdatabycsv(request):
             filename=str(current_time)+"_bussinesslist.csv"
             df.to_csv(filename,index=False)
 
-            send_mail(filename, "rayhunkhan27@gmail.com")
+            send_mail(filename, request.user.email)
 
             user_wallet.available_requests_balance-=received_record
             user_wallet.save()
@@ -239,9 +234,7 @@ def getdatabycsv(request):
 @login_required
 def pay_as_go(request, expected_price):
     stripe.api_key = settings.STRIPE_SECRET_KEY
-
     session = stripe.checkout.Session.create(
-
         payment_method_types=['card'],
         line_items=[{
             'price_data': {
@@ -254,7 +247,6 @@ def pay_as_go(request, expected_price):
             'quantity': 1,
         }],
         mode='payment',
-
         success_url=f'{request.build_absolute_uri("/")}'+'google_search/pay_as_go_success?session_id={CHECKOUT_SESSION_ID}',
         cancel_url=f'{request.build_absolute_uri("/")}'+'plans/payment_cancel',
         client_reference_id=expected_price
