@@ -111,8 +111,11 @@ def get_data_option(request):
 
 
 def signup_redirect(request):
-    messages.error(request, "Something wrong here, it may be that you already have account!")
-    return redirect("dashboard")
+    if request.user.is_authenticated:
+        messages.error(request, "Something wrong here, it may be that you already have account!")
+        return redirect("dashboard")
+    else:
+        return redirect("Login")
 
 
 @login_required
@@ -198,9 +201,9 @@ def getdatabycsv(request):
             now = datetime.now()
             current_time = now.strftime("%d_%m_%Y_%H_%M_%S")
             filename=str(current_time)+"_bussinesslist.csv"
-            # df.to_csv(filename, index=False)
+            df.to_csv(filename, index=False)
 
-            # send_mail(filename, request.user.email)
+            send_mail(filename, request.user.email)
 
             user_wallet.available_requests_balance-=received_record
             user_wallet.save()
