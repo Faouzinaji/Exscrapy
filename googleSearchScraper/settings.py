@@ -11,12 +11,11 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 import os
 from pathlib import Path
-import dj_database_url
 
 from .local_settings import (
-    SECRET_KEY, DEBUG, _CLOUD_NAME, _API_KEY, _API_SECRET, EMAIL_USER,
-    EMAIL_PASSWORD, STRIPE_PUBLISHABLE, STRIPE_SECRET, BASIC_PRICE, 
-    PREMIUM_PRICE, ADVANCE_PRICE, DATABASES
+    SECRET_KEY, DEBUG, EMAIL_USER, GET_EMAIL_HOST, EMAIL_PASSWORD,
+    STRIPE_PUBLISHABLE, STRIPE_SECRET, BASIC_PRICE,  PREMIUM_PRICE,
+    ADVANCE_PRICE, DATABASES, 
 )
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -183,10 +182,11 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': _CLOUD_NAME,
-    'API_KEY': _API_KEY,
-    'API_SECRET': _API_SECRET,
+    'CLOUD_NAME': 'dwqb7y8lr',
+    'API_KEY': '379788336851674',
+    'API_SECRET': 'MgIzj4Sj59RFoCDKiQSlM5qU6Zw',
 }
+
 
 #DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
@@ -202,11 +202,11 @@ MESSAGE_TAGS = {
 
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
-EMAIL_HOST = 'mail.exscrapy.com'
+EMAIL_HOST = GET_EMAIL_HOST
 EMAIL_HOST_USER = EMAIL_USER
 EMAIL_HOST_PASSWORD = EMAIL_PASSWORD
 EMAIL_PORT = 587

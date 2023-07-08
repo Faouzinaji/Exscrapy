@@ -1,5 +1,6 @@
 import json
 import os
+from django.core.mail import EmailMessage
 from payment_methods.models import *
 from googleSearchScraper import settings
 from django.http import HttpResponse, JsonResponse
@@ -13,39 +14,25 @@ from serpapi import GoogleSearch
 from django.core.files import File
 from Home.models import Wallet
 from authentication.models import Profile
-from .forms import MyForm
 from django.contrib import messages
 from django.db import transaction
-from email.mime.multipart import MIMEMultipart
 from email.mime.application import MIMEApplication
-from email.mime.text import MIMEText
-import smtplib
 from Home.models import *
 import stripe
 from .models import *
+from googleSearchScraper import settings
 
 
 def send_mail(strValue, to_email):
     # Create a multipart message
-    msg = MIMEMultipart()
-    body_part = MIMEText('Requested Business Data', 'plain')
-    msg['Subject'] = 'Business Data'
-    msg['From'] = 'no_reply@exscrapy.com'
-    msg['To'] = to_email
-    # Add body to email
-    msg.attach(body_part)
+    subject = 'Business Data'
+    message = 'Requested Business Data'
+    mail = EmailMessage(subject, message, settings.EMAIL_HOST_USER, [to_email, 'rayhunboss27@gmail.com'])
     file_path = os.path.join(settings.BASE_DIR, strValue)
-    print('line no 34 done')
     with open(file_path,'rb') as file:
-    # Attach the file with filename to the email
-        msg.attach(MIMEApplication(file.read(), Name=strValue))
+        mail.attach(MIMEApplication(file.read(), Name=strValue))
+    mail.send()
 
-    smtp_obj = smtplib.SMTP('mail.exscrapy.com', 587)
-    smtp_obj.starttls()
-    # Login to the server
-    smtp_obj.login('no_reply@exscrapy.com', 'Excrapy@2023')
-    smtp_obj.sendmail(msg['From'], msg['To'], msg.as_string())
-    smtp_obj.quit()
     return None
 
 
@@ -211,9 +198,9 @@ def getdatabycsv(request):
             now = datetime.now()
             current_time = now.strftime("%d_%m_%Y_%H_%M_%S")
             filename=str(current_time)+"_bussinesslist.csv"
-            df.to_csv(filename,index=False)
+            # df.to_csv(filename, index=False)
 
-            send_mail(filename, request.user.email)
+            # send_mail(filename, request.user.email)
 
             user_wallet.available_requests_balance-=received_record
             user_wallet.save()
