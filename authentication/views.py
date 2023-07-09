@@ -4,12 +4,29 @@ from django.contrib import messages, auth
 from django.contrib.auth import login, logout
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
-
-from django.core.mail import send_mail, EmailMessage,EmailMultiAlternatives
+from django.views.generic import View
+from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 
-# Create your views here.
+from .models import Landing, Price
+
+
+class HomeView(View):
+    template_name = 'landing.html'
+    def get(self, request, *args, **kwargs):
+        banner = Landing.objects.filter(section__code='bn').last()
+        intro = Landing.objects.filter(section__code='int')
+        pric = Landing.objects.filter(section__code='pric').last()
+        last = Landing.objects.filter(section__code='last').last()
+        all_price = Price.objects.all()
+        context = {
+            'banner': banner, 'intro': intro, 'pric': pric,
+            'all_price': all_price, 'last': last
+        }
+        return render(request, self.template_name, context)
+
+
 from .models import Profile
 def send_email_otp(x,user_email,otp):
 
