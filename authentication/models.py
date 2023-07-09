@@ -31,3 +31,45 @@ class Profile(models.Model):
 
     def __str__(self):
         return self.owner.username
+
+
+class CommonField(models.Model):
+    title = models.CharField(max_length=255)
+    subtitle = models.CharField(max_length=255)
+
+    class Meta:
+        abstract = True
+
+class Section(models.Model):
+    name = models.CharField(max_length=255)
+    code = models.CharField(max_length=25)
+
+    def __str__(self):
+        return self.name
+
+
+class Landing(CommonField):
+    section = models.ForeignKey(Section, on_delete=models.SET_NULL, null=True)
+    link = models.CharField(max_length=100, null=True, blank=True)
+    image = models.ImageField(upload_to='images', null=True, blank=True)
+    is_active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.section.name
+
+
+class Price(models.Model):
+    models.ForeignKey(Landing, on_delete=models.SET_NULL, null=True, blank=True)
+    title = models.CharField(max_length=100)
+    sub_title = models.CharField(max_length=100)
+    price = models.FloatField(null=True, blank=True, default=0.00)
+
+    def __str__(self):
+        return self.title
+
+class Features(models.Model):
+    to = models.ForeignKey(Price, on_delete=models.SET_NULL, null=True, blank=True)
+    title = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.title
