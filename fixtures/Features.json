@@ -1,0 +1,82 @@
+[
+{
+    "model": "authentication.features",
+    "pk": 1,
+    "fields": {
+        "to": 1,
+        "title": "Free limited features for individuals"
+    }
+},
+{
+    "model": "authentication.features",
+    "pk": 2,
+    "fields": {
+        "to": 1,
+        "title": "No monthly limit on searches"
+    }
+},
+{
+    "model": "authentication.features",
+    "pk": 3,
+    "fields": {
+        "to": 1,
+        "title": "Advances search filters"
+    }
+},
+{
+    "model": "authentication.features",
+    "pk": 4,
+    "fields": {
+        "to": 1,
+        "title": "CSV and XLS export"
+    }
+},
+{
+    "model": "authentication.features",
+    "pk": 5,
+    "fields": {
+        "to": 2,
+        "title": "Free limited features for individuals"
+    }
+},
+{
+    "model": "authentication.features",
+    "pk": 6,
+    "fields": {
+        "to": 2,
+        "title": "No monthly limit on searches"
+    }
+},
+{
+    "model": "authentication.features",
+    "pk": 7,
+    "fields": {
+        "to": 2,
+        "title": "Advances search filters"
+    }
+},
+{
+    "model": "authentication.features",
+    "pk": 8,
+    "fields": {
+        "to": 2,
+        "title": "CSV and XLS export"
+    }
+},
+{
+    "model": "authentication.features",
+    "pk": 9,
+    "fields": {
+        "to": 2,
+        "title": "Free Hosting"
+    }
+},
+{
+    "model": "authentication.features",
+    "pk": 10,
+    "fields": {
+        "to": 3,
+        "title": "Free Hosting"
+    }
+}
+]

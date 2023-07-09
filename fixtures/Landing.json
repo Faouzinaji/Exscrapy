@@ -1,0 +1,74 @@
+[
+{
+    "model": "authentication.landing",
+    "pk": 1,
+    "fields": {
+        "title": "Unlock Your Business Potential with Excrapy's B2B Prospecting Database",
+        "subtitle": "What’s your top business goal for the next 6 months? Find the right prospects in just a few clicks with our B2B database.",
+        "section": 1,
+        "link": "Xi2arBZxxtI",
+        "image": "",
+        "is_active": true
+    }
+},
+{
+    "model": "authentication.landing",
+    "pk": 2,
+    "fields": {
+        "title": "Select a business type",
+        "subtitle": "Choose from a wide range of business types to find the right database for your needs.",
+        "section": 2,
+        "link": null,
+        "image": "",
+        "is_active": true
+    }
+},
+{
+    "model": "authentication.landing",
+    "pk": 3,
+    "fields": {
+        "title": "Enter your location",
+        "subtitle": "We’ll help you find the right businesses in your area.",
+        "section": 2,
+        "link": null,
+        "image": "",
+        "is_active": true
+    }
+},
+{
+    "model": "authentication.landing",
+    "pk": 4,
+    "fields": {
+        "title": "Download your results",
+        "subtitle": "Get a comprehensive list of potential clients, complete with contact information, in just a few clicks.",
+        "section": 2,
+        "link": null,
+        "image": "",
+        "is_active": true
+    }
+},
+{
+    "model": "authentication.landing",
+    "pk": 5,
+    "fields": {
+        "title": "Pricing",
+        "subtitle": "Reduce your marketing costs and find more qualified leads with our B2B prospecting databases.",
+        "section": 3,
+        "link": null,
+        "image": "",
+        "is_active": true
+    }
+},
+{
+    "model": "authentication.landing",
+    "pk": 6,
+    "fields": {
+        "title": "Stuck in your prospecting? Try our database.",
+        "subtitle": "Generate a complete list of potential customers with instant access to accurate and updated information.",
+        "section": 4,
+        "link": null,
+        "image": "",
+        "is_active": true
+    }
+}
+]

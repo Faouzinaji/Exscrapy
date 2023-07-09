@@ -1,38 +1,29 @@
 [
 {
-    "model": "payment_methods.price_plan",
+    "model": "authentication.price",
     "pk": 1,
     "fields": {
-        "title": "Basic Plan",
-        "description": "This is Basic plan",
-        "price": 9,
-        "perline_price": 0.009,
-        "no_of_lines": 1000,
-        "plan_img": "Plan Images/Sans_titre_43.png"
+        "title": "BASIC",
+        "sub_title": "Free limited features for individuals",
+        "price": 10.0
     }
 },
 {
-    "model": "payment_methods.price_plan",
+    "model": "authentication.price",
     "pk": 2,
     "fields": {
-        "title": "Premium Plan",
-        "description": "This is premium plan",
-        "price": 50,
-        "perline_price": 0.005,
-        "no_of_lines": 10000,
-        "plan_img": "Plan Images/Sans_titre_42.png"
+        "title": "SILVER",
+        "sub_title": "Free limited features for individuals",
+        "price": 50.0
     }
 },
 {
-    "model": "payment_methods.price_plan",
+    "model": "authentication.price",
     "pk": 3,
     "fields": {
-        "title": "Standard Plan",
-        "description": "This is Advanced plan",
-        "price": 100,
-        "perline_price": 0.005,
-        "no_of_lines": 500000,
-        "plan_img": "Plan Images/Sans_titre_41.png"
+        "title": "GOLD",
+        "sub_title": "Free limited features for individuals",
+        "price": 150.0
     }
 }
 ]
