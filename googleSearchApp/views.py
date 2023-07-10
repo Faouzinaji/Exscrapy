@@ -437,7 +437,7 @@ def run_again_query(request, id):
                 query_name=query_obj.query_name, query_type='Locations',
                 query_list=json.dumps(myPythonList), output_file=File(file)
             )
-        messages.error(request, 'Your requested file is ready and you can download on dashboard.')
+        messages.success(request, 'Your requested file is ready and you can download on dashboard.')
         return redirect('dashboard')
     else:
         msg_text=f'You must have {query_obj.no_of_records_limit} credit lines in your account to rerun this query. Please Buy plan'
