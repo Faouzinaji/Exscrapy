@@ -97,7 +97,10 @@ class UserProfileView(DetailView):
         subscriber = user.subscriber_set.all()
         available = user.profile.wallet_set.all().last().available_requests_balance
         no_of_lines = subscriber.aggregate(Sum('plan__no_of_lines'))['plan__no_of_lines__sum']
-        spent = int(no_of_lines) - int(available)
+        try:
+            spent = int(no_of_lines) - int(available)
+        except Exception as e:
+            spent = 0
         context['user'] = user
         context['spent'] = spent
         context['no_of_lines'] = no_of_lines
