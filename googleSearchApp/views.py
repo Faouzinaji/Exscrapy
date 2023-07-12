@@ -6,7 +6,6 @@ from googleSearchScraper import settings
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-import pandas as pd
 from django.views.decorators.csrf import csrf_exempt
 import pandas as pd 
 from datetime import datetime
@@ -48,7 +47,6 @@ def index(request):
         current_active_plan = Subscriber.objects.get(user=request.user, status='Active')
         current_active_plan_price = current_active_plan.plan.perline_price
 
-
     if request.method == 'POST':
             activity = request.POST.get('activity')
             query_reference = request.POST.get('query_reference')
@@ -69,7 +67,6 @@ def index(request):
                     place = Country.objects.filter(country=selected_country)
                     if place:
                         for db_data in place:
-                            print(f"place====== {place}, db_data ========={db_data}")
                             selected_items += 1
                             search_keywords.append(activity + ' in ' + db_data.place + ',' + selected_country)
             sum_queries = selected_items * 15
@@ -215,7 +212,7 @@ def getdatabycsv(request):
                     query_name=query_reference,
                     query_list=json.dumps(search_keyword), output_file=File(file)
                 )
-            messages.error(request, 'Your requested file is ready and you can download on dashboard.')
+            messages.success(request, 'Your requested file is ready and you can download on dashboard.')
             return redirect('dashboard')
         else:
             return render(request,'pay_as_go.html',{'counter_pages':received_record, 'expected_price':int(expected_price),'user_wallet':user_wallet,'user_profile':user_profile})

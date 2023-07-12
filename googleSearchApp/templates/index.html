@@ -223,19 +223,18 @@
 
 
         var searchInput = document.getElementById("searchInput");
-        var selectAllBtn = document.getElementById("selectAllBtn");
+        // var selectAllBtn = document.getElementById("selectAllBtn");
         var checkboxes = document.querySelectorAll(".dropdown-checkbox");
 
 
-        selectAllBtn.addEventListener("click", (event) => {
+        // selectAllBtn.addEventListener("click", (event) => {
 
-            event.preventDefault();
-            event.stopPropagation();
-            console.log(checkboxes)
-            checkboxes.forEach((checkbox) => {
-                checkbox.checked = !checkbox.checked;
-            });
-        });
+        //     event.preventDefault();
+        //     event.stopPropagation();
+        //     checkboxes.forEach((checkbox) => {
+        //         checkbox.checked = !checkbox.checked;
+        //     });
+        // });
 
 
         searchInput.addEventListener("keyup", () => {
@@ -322,7 +321,23 @@
 
                 }
             });
+            
         })
+
+        $(document).ready(function () {
+            $("#dropdownMenuButton").click(function () {
+                    // limit checkbox select
+                    // $('.form-check-input').on('change', function (e) {
+                    //     if ($('.form-check-input:checked').length > 5) {
+                    //         $(this).prop('checked', false);
+                    //     }
+                    // });
+
+                $("#selectAllBtn").click(function () {
+                    $(".form-check-input:checkbox:lt(31)").prop("checked", true);
+                })
+            });
+        });
 
 
     </script>
