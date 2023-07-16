@@ -1,67 +1,12 @@
-
-
-
-
-
-{#from here 2nd page starts#}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 {% extends 'base2.html' %}
-{% load static %}
+{% load static notifications_tags %}
 
 {% block title %}
-    Dashboard
+Dashboard
 {% endblock %}
 {% block content %}
-
-
-
-
-
-
-    <body class="hold-transition light-mode sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
+<body class="hold-transition light-mode sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
     <div class="wrapper">
-
-
         <div class="content-wrapper">
             <!-- Content Header (Page header) -->
             <section class="content-header">
@@ -86,128 +31,105 @@
                 <div class="container-fluid">
                     <div class="row">
 
-                            <div class="col-md-7">
+                        <div class="col-md-7">
 
-                                <div class="card card-primary">
-              <div class="card-header">
-                <h3 class="card-title"> Request Confirmation</h3>
+                            <div class="card card-primary">
+                                <div class="card-header">
+                                    <h3 class="card-title"> Request Confirmation</h3>
 
-              </div>
+                                </div>
 
-                                    <p class="card-body">&nbsp;<b>You are going to Extract data from {{ selected_items }} places queries</b></p>
-
-
-{#           <table  id="example2" class="table table-bordered table-hover">#}
-{##}
-{##}
-{#                                        <thead>#}
-{#                                        <tr>#}
-{##}
-{#                                        <th>Places</th>#}
-{##}
-{##}
-{#                                        </tr>#}
-{#                                        </thead>#}
-{#                                        <tbody>#}
-{#                                   {% for item in few_lines %}#}
-{#                                      <tr>#}
-{##}
-{##}
-{#                                        <td>{{item}}</td>#}
-{##}
-{#                                      </tr>#}
-{#                                      {% endfor %}#}
-{##}
-{#                                        </tbody>#}
-{##}
-{##}
-{#                                    </table>#}
-            </div>
+                                <p class="card-body">&nbsp;<b>You are going to Extract data from {{ selected_items }}
+                                        places queries</b></p>
 
 
-            </div>
+                                {# <table id="example2" class="table table-bordered table-hover">#}
+                                    {##}
+                                    {##}
+                                    {# <thead>#}
+                                        {# <tr>#}
+                                            {##}
+                                            {# <th>Places</th>#}
+                                            {##}
+                                            {##}
+                                            {# </tr>#}
+                                        {# </thead>#}
+                                    {# <tbody>#}
+                                        {# {% for item in few_lines %}#}
+                                        {# <tr>#}
+                                            {##}
+                                            {##}
+                                            {# <td>{{item}}</td>#}
+                                            {##}
+                                            {# </tr>#}
+                                        {# {% endfor %}#}
+                                        {##}
+                                        {# </tbody>#}
+                                    {##}
+                                    {##}
+                                    {# </table>#}
+                            </div>
 
-          <div class="col-md-5">
 
-                             <div class="card card-primary">
-
-                  <div class="position-relative p-3 bg-gradient-light" style="height: 380px">
-                      <div class="ribbon-wrapper ribbon-lg">
-                        <div class="ribbon bg-success text-lg">
-                          Note
                         </div>
-                      </div>
-                  <br>
-             <ul>
-                 <li>
-                     A query on one places allow you to get a result <br> page and we crawl every page
-                 </li>
-                 <br>
-                 <p> <b>Approximate Estimations of your requests:</b></p>
-                 <li>
-                     {{ sum_queries }} queries to perform for crawl each page result of each location.
-                 </li>
-                 <li>
-                     <b>{{ num }}</b> rows can be export with this request.
-                 </li>
-                 <li>
-                     <b>{{ expected_price }} $</b> cost for this request.
-                 </li>
-                 <li>
-                     <b>{{ expected_time_min }} (hh:mm:ss) to {{ expected_time_max }} (hh:mm:ss)  Time requrired</b> for delivering the data.
-                 </li>
-             </ul>
 
-                           <form id="msform" action="{% url 'getdatabycsv'  %}" method="post">
-                        {% csrf_token %}
-                                      <input type="submit" class="btn btn-lg btn-primary" id="Login" onclick="showDiv()" value="Get Data">
+                        <div class="col-md-5">
 
+                            <div class="card card-primary">
 
-                                 </form>
+                                <div class="position-relative p-3 bg-gradient-light" style="height: 380px">
+                                    <div class="ribbon-wrapper ribbon-lg">
+                                        <div class="ribbon bg-success text-lg">
+                                            Note
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <ul>
+                                        <li>
+                                            A query on one places allow you to get a result <br> page and we crawl every
+                                            page
+                                        </li>
+                                        <br>
+                                        <p> <b>Approximate Estimations of your requests:</b></p>
+                                        <li>
+                                            {{ sum_queries }} queries to perform for crawl each page result of each
+                                            location.
+                                        </li>
+                                        <li>
+                                            <b>{{ num }}</b> rows can be export with this request.
+                                        </li>
+                                        <li>
+                                            <b>{{ expected_price }} $</b> cost for this request.
+                                        </li>
+                                        <li>
+                                            <b>{{ expected_time_min }} (hh:mm:ss) to {{ expected_time_max }} (hh:mm:ss)
+                                                Time requrired</b> for delivering the data.
+                                        </li>
+                                    </ul>
 
+                                        <input type="submit" class="btn btn-lg btn-primary" id="Login"
+                                            onclick="showDiv()" value="Get Data">
 
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.row -->
                     </div>
-
-
-
-
-
-
-
-
-
-
-            </div>
-
-
-                    </div>
-                    <!-- /.row -->
-                </div>
-                <!-- /.container-fluid -->
+                    <!-- /.container-fluid -->
                 </div>
             </section>
             <!-- /.content -->
         </div>
 
-     <div id="loadingGif" style="display:none">
+        <div id="loadingGif" style="display:none">
 
-    <img id="loading-image" style="height: 160px;width: 160px" src="{% static 'dist/img/loader.gif' %}"
-         alt="Loading..."/>
-     </div>
+            <img id="loading-image" style="height: 160px;width: 160px" src="{% static 'dist/img/loader.gif' %}"
+                alt="Loading..." />
+        </div>
     </div>
 
 
-
-
-
-
-
-
     <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
-
-
-
-
     <script type="text/javascript">
         function showDiv() {
             document.getElementById('Login').style.display = "none";
@@ -215,11 +137,11 @@
             setTimeout(function () {
                 document.getElementById('loadingGif').style.display = "none";
 
-            }, 120000);
-
+            }, 1200);
         }
+        
     </script>
-        <script>
+    <script>
         $(function () {
 
             $('#example2').DataTable({
@@ -234,8 +156,7 @@
         });
     </script>
 
-    </body>
+</body>
 
 
 {% endblock %}
-

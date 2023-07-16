@@ -156,17 +156,14 @@
 
                                                     </div>
                                                     <div class="text-center">
-                                                        <button class="btn btn-secondary btn-sm w-50" id="selectAllBtn"
-                                                                type="button">Select All
+                                                        <button class="btn btn-secondary btn-sm w-50" id="selectAllBtn" 
+                                                            type="button">Select All
                                                         </button>
                                                     </div>
-
-
                                                 </div>
                                             </div>
                                         </div>
                                         <br>
-
                                         <div class="card-footer">
                                             <button type="submit" id="Login" class="btn btn-primary" onclick="showDiv()">Get Data</button>
                                         </div>
@@ -223,18 +220,17 @@
 
 
         var searchInput = document.getElementById("searchInput");
-        // var selectAllBtn = document.getElementById("selectAllBtn");
+        var selectAllBtn = document.getElementById("selectAllBtn");
         var checkboxes = document.querySelectorAll(".dropdown-checkbox");
 
 
-        // selectAllBtn.addEventListener("click", (event) => {
-
-        //     event.preventDefault();
-        //     event.stopPropagation();
-        //     checkboxes.forEach((checkbox) => {
-        //         checkbox.checked = !checkbox.checked;
-        //     });
-        // });
+        selectAllBtn.addEventListener("click", (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            checkboxes.forEach((checkbox) => {
+                checkbox.checked = !checkbox.checked;
+            });
+        });
 
 
         searchInput.addEventListener("keyup", () => {
@@ -324,26 +320,20 @@
             
         })
 
-        $(document).ready(function () {
-            $("#dropdownMenuButton").click(function () {
-                    // limit checkbox select
-                    // $('.form-check-input').on('change', function (e) {
-                    //     if ($('.form-check-input:checked').length > 5) {
-                    //         $(this).prop('checked', false);
-                    //     }
-                    // });
+        // $(document).ready(function () {
+            // $("#dropdownMenuButton").click(function () {
+            //         // limit checkbox select
+            //         // $('.form-check-input').on('change', function (e) {
+            //         //     if ($('.form-check-input:checked').length > 5) {
+            //         //         $(this).prop('checked', false);
+            //         //     }
+            //         // });
 
-                $("#selectAllBtn").click(function () {
-                    $(".form-check-input:checkbox:lt(31)").prop("checked", true);
-                })
-            });
-        });
-
-
+            //     $("#selectAllBtn").click(function () {
+            //         $(".form-check-input:checkbox:lt(31)").prop("checked", true);
+            //     })
+            // });
+        // });
     </script>
-
-
     </body>
-
-
 {% endblock %}

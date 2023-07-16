@@ -7,6 +7,7 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
+from notifications.signals import notify
 import pandas as pd 
 from datetime import datetime
 from serpapi import GoogleSearch
@@ -115,7 +116,6 @@ def signup_redirect(request):
         return redirect("Login")
 
 
-@login_required
 def getdatabycsv(request):
     user_profile=Profile.objects.get(owner=request.user)
     user_wallet=Wallet.objects.get(user_id=user_profile)
@@ -191,8 +191,8 @@ def getdatabycsv(request):
                         data_dic.append(dict)
 
                 except Exception as e:
-                        print('Exception at line no 247 is', e)
-                        pass
+                    print('Exception at line no 247 is', e)
+                    pass
 
             df = pd.DataFrame(data_dic)
             now = datetime.now()
@@ -201,6 +201,8 @@ def getdatabycsv(request):
             df.to_csv(filename, index=False)
 
             send_mail(filename, request.user.email)
+
+            notify.send(sender=request.user, recipient=request.user, verb='your data is downloaded' + f''' <a href="https://exscrapy.com">Go</a> ''')
 
             user_wallet.available_requests_balance-=received_record
             user_wallet.save()
@@ -215,7 +217,16 @@ def getdatabycsv(request):
             messages.success(request, 'Your requested file is ready and you can download on dashboard.')
             return redirect('dashboard')
         else:
-            return render(request,'pay_as_go.html',{'counter_pages':received_record, 'expected_price':int(expected_price),'user_wallet':user_wallet,'user_profile':user_profile})
+            return render(
+                request,
+                'pay_as_go.html',
+                {
+                    'counter_pages':received_record,
+                    'expected_price':int(expected_price),
+                    'user_wallet':user_wallet,
+                    'user_profile':user_profile
+                }
+            )
 
 
 @login_required
