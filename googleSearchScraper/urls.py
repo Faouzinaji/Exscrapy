@@ -31,6 +31,7 @@ urlpatterns = [
     path('social/signup/', views.signup_redirect, name='signup_redirect'),
 
     path('plans/', include('payment_methods.urls')),
+    path('inbox/notifications/', include('notifications.urls', namespace='notifications')),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL,
