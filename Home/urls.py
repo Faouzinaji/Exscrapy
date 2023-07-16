@@ -5,6 +5,7 @@ from . import views
 urlpatterns=[
     path('', views.dashboard, name='dashboard'),
     path('profile/<int:pk>/', views.UserProfileView.as_view(), name='profile'),
+    path('notification/', views.Notifications.as_view(), name='notification'),
     path(
         'update/profile/<int:pk>/', views.UpdateProfileView.as_view(),
         name='update_profile'

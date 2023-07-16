@@ -1,8 +1,8 @@
 import os
-from typing import Any
+from typing import Any, Dict
 from django.conf import settings
 from django.db.models import Sum
-from django.views.generic import DetailView, UpdateView
+from django.views.generic import DetailView, UpdateView, TemplateView
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -13,6 +13,7 @@ from django.urls import reverse_lazy
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
+from notifications.models import Notification
 
 from payment_methods.models import Subscriber
 from .models import *
@@ -213,3 +214,14 @@ def contact_us(request):
     context = {'user_profile': users,'user_wallet':user_wallet}
 
     return render(request, 'contact_us.html', context)
+
+
+class Notifications(TemplateView):
+    template_name = 'notifications.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['notification_list'] = Notification.objects.filter(
+            recipient=self.request.user
+        )
+        return context

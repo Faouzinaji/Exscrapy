@@ -1,0 +1,44 @@
+{% extends 'base2.html' %}
+{% load notifications_tags %}
+
+{% block title %}
+    Profile
+{% endblock %}
+{% block content %}
+<style>
+    .alert-success-read {
+    color: #000;
+    background-color: #b0c4b580;
+    border-color: #b0c4b580;
+}
+</style>
+<body class="hold-transition light-mode sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
+    <div class="wrapper">
+        <div class="content-wrapper">
+            <!-- Main content -->
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card mt-4">
+                                <div class="card-body">
+                                You have total <strong>{% live_notify_badge %}</strong> unread notifications. <br> <br>
+                                
+                                {% for obj in notification_list %}
+                                <div class="alert {% if obj.unread %} alert-success {% else %} alert-success-read {% endif %} mb-2" role="alert">
+                                    {{ obj.verb|safe }}
+                                </div>
+                                {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.container-fluid -->
+            </section>
+            <!-- /.content -->
+        </div>
+    </div>
+</body>
+{% endblock %}
+

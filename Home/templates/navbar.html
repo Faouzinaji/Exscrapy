@@ -2,6 +2,8 @@
 
 
 {% load static %}
+{% load notifications_tags %}
+
 
 
 <nav class="main-header navbar navbar-expand navbar-white navbar-light">
@@ -10,31 +12,19 @@
         <li class="nav-item">
             <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
         </li>
-             <li class="nav-item d-none d-sm-inline-block">
-
-
-                 <div id='google_translate_element' class="form-group"></div>
-      </li>
-
-
-
+        <li class="nav-item d-none d-sm-inline-block">
+            <div id='google_translate_element' class="form-group"></div>
+        </li>
     </ul>
-
-
-
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
      <li class="nav-item">
          <h6 class="nav-link" data-widget="pushmenu" style="background-color:lightcyan"><b>Remaining Credit Lines:{{ user_wallet.available_requests_balance}}</b></h6>
-
-
-
-        </li>
-
-
+    </li>
         <!-- Notifications Dropdown Menu -->
 
-        <li class="nav-item dropdown user-menu">
+        <l
+        i class="nav-item dropdown user-menu">
             <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
 
 
@@ -130,49 +120,23 @@
                         </p>
                     </a>
                 </li>
-
-
-
-
-{#                <li class="nav-item">#}
-{#                      <a href="#" class="nav-link">#}
-{#                        <i class="fa fa-history"></i>#}
-{#                        <p>#}
-{#                            Transaction History#}
-{#                            <i class="fas fa-angle-left right"></i>#}
-{#                            <span class="badge badge-info right">2</span>#}
-{#                        </p>#}
-{#                    </a>#}
-{##}
-{##}
-{#                    <ul class="nav nav-treeview">#}
-{#                        <li class="nav-item">#}
-{##}
-{##}
-{#                            <a href="#" class="nav-link">#}
-{#                        <i class="far fa-circle nav-icon"></i>#}
-{#                        <p>#}
-{#                            Withdraw History#}
-{##}
-{#                        </p>#}
-{#                    </a>#}
-{#                        </li>#}
-{#                        <li class="nav-item">#}
-{#                            <a href="#" class="nav-link">#}
-{#                                <i class="far fa-circle nav-icon"></i>#}
-{#                                <p>Deposit History</p>#}
-{#                            </a>#}
-{#                        </li>#}
-{##}
-{#                    </ul>#}
-{##}
-{#                </li>#}
-
-
-
-
-
-
+                <li class="nav-item">
+                    {% notifications_unread as unread_count %}
+                    {% if unread_count %}
+                    {% register_notify_callbacks callbacks='fill_notification_list, fill_notification_badge, my_special_notification_callback' %}
+                    <a href="{% url 'notification' %}" class="nav-link">
+                        <i class="fa fa-bell" aria-hidden="true"></i>
+                        <p>
+                            Notifications <sup style="
+                                background-color: #870000;
+                                padding: 0px 5px 2px 5px;
+                                color: #fff;
+                                border-radius: 5px;
+                                ">{% live_notify_badge %}</sup>
+                        </p>
+                    </a>
+                    {% endif %}
+                </li>
                 <li class="nav-item">
                     <a href="{% url 'contact_us' %}" class="nav-link">
                         <i class="fa fa-envelope"></i>
@@ -182,8 +146,6 @@
                         </p>
                     </a>
                 </li>
-
-
                 <li class="nav-item">
                     <a href="{% url 'Settings' %}" class="nav-link">
                         <i class="fas fa-cog"></i>
@@ -205,7 +167,7 @@
                         </p>
                     </a>
                 </li>
-
+            
 
             </ul>
         </nav>
