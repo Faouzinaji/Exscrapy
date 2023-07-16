@@ -202,7 +202,7 @@ def getdatabycsv(request):
 
             send_mail(filename, request.user.email)
 
-            notify.send(sender=request.user, recipient=request.user, verb='your data is downloaded' + f''' <a href="https://exscrapy.com">Go</a> ''')
+            notify.send(sender=request.user, recipient=request.user, verb='👍 Your data is downloaded! ' + f''' <a href="https://exscrapy.com/dashboard/"> Go to download page </a> ''')
 
             user_wallet.available_requests_balance-=received_record
             user_wallet.save()
