@@ -13,4 +13,7 @@ urlpatterns=[
     path('Settings', views.Setting, name='Settings'),
     path('setting_security', views.setting_security, name='setting_security'),
     path('contact_us', views.contact_us, name='contact_us'),
+
+    # ajax
+    path('ajax/read/notification', views.read_notification, name='read_notification'),
 ]

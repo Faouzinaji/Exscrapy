@@ -225,3 +225,11 @@ class Notifications(TemplateView):
             recipient=self.request.user
         )
         return context
+
+
+def read_notification(request):
+    value = request.GET.get('value')
+    notification = Notification.objects.get(pk=value)
+    notification.unread = False
+    notification.save()
+    return True

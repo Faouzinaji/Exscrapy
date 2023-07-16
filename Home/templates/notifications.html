@@ -2,15 +2,18 @@
 {% load notifications_tags %}
 
 {% block title %}
-    Profile
+Notification
 {% endblock %}
 {% block content %}
 <style>
     .alert-success-read {
-    color: #000;
-    background-color: #b0c4b580;
-    border-color: #b0c4b580;
-}
+        color: #000;
+        background-color: #b0c4b580;
+        border-color: #b0c4b580;
+    }
+    .alert-success-read a {
+        color: #000;
+    }
 </style>
 <body class="hold-transition light-mode sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
     <div class="wrapper">
@@ -27,6 +30,7 @@
                                 {% for obj in notification_list %}
                                 <div class="alert {% if obj.unread %} alert-success {% else %} alert-success-read {% endif %} mb-2" role="alert">
                                     {{ obj.verb|safe }}
+                                    <input type="hidden" name="value" class="value" value="{{ obj.pk }}">
                                 </div>
                                 {% endfor %}
                                 </div>
@@ -39,6 +43,21 @@
             <!-- /.content -->
         </div>
     </div>
+    <script>
+        $(document).ready(function () {
+            $(".alert").click(function () {
+                var value = $(this).children("input.value").val();
+                $.ajax({
+                    url: "{% url 'read_notification' %}",
+                    data: {
+                        'value': value,
+                    },
+                    success: function (data) {
+                        console.log(data);
+                    },
+                });
+            });
+        });
+    </script>
 </body>
 {% endblock %}
-
