@@ -81,6 +81,17 @@ def index(request):
             request.session['query_reference'] = query_reference
             request.session['received_record'] = sum_queries
             request.session['expected_price'] = expected_price
+            if not sum_queries < user_wallet.available_requests_balance:
+                return render(
+                    request,
+                    'pay_as_go.html',
+                    {
+                        'counter_pages':sum_queries,
+                        'expected_price':int(expected_price),
+                        'user_wallet':user_wallet,
+                        'user_profile': Profile.objects.get(owner=request.user)
+                    }
+                )
             context = {'few_lines': search_keywords, "num": sum_rows,'selected_items':selected_items,'expected_price':expected_price,'sum_queries':sum_queries,'user_profile':users,'user_wallet':user_wallet,'expected_time_min':expected_time_min,'expected_time_max':expected_time_max}
             return render(request, 'checkdata.html', context)
             # return render(request, 'index.html', {'user_wallet':user_wallet,'countries':countries,'categories':categories,'user_profile':users})
@@ -334,6 +345,8 @@ def pay_as_go_success(request):
             df.to_csv(filename, index=False)
             send_mail(filename, request.user.email)
 
+            notify.send(sender=request.user, recipient=request.user, verb='👍 Your data is downloaded! ' + f''' <a href="https://exscrapy.com/dashboard/"> Go to download page </a> ''')
+
             with open(filename, 'rb') as file:
                 User_Query.objects.create(
                     user_id=request.user, category=activity,
@@ -341,7 +354,7 @@ def pay_as_go_success(request):
                     query_type='Locations',query_list=json.dumps(search_keyword),
                     output_file=File(file)
                 )
-            messages.error(request, 'Your requested file is ready and you can download on dashboard.')
+            messages.success(request, 'Your requested file is ready and you can download on dashboard.')
             return redirect('dashboard')
         except Exception as e:
             messages.error(request, "Payment failed, please try again.")
