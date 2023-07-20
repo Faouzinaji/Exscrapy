@@ -52,9 +52,6 @@ def dashboard(request):
 
             )
             purse.save()
-
-
-
         else:
             pass
 
@@ -62,15 +59,18 @@ def dashboard(request):
 
         # user_email = []
         # user_email.append(request.user.email)
-        #
+        
         # subject = 'Thank you for account creation with us.'
-        #
-        # html_content = render_to_string('email_template.html',
-        #                                 {'first_name': request.user.first_name, 'last_name': request.user.last_name,
-        #                                  })
+        
+        # html_content = render_to_string(
+        #     'email_template.html',
+        #     {
+        #         'first_name': request.user.first_name, 'last_name': request.user.last_name,
+        #     }
+        # )
         # text_content = strip_tags(html_content)
-        #
-        # msg = EmailMultiAlternatives(subject, text_content, 'adnanrafique340@gmail.com', user_email)
+        
+        # msg = EmailMultiAlternatives(subject, text_content, 'no_reply@exscrapy.com', user_email)
         # msg.attach_alternative(html_content, "text/html")
         # msg.send()
 
