@@ -77,13 +77,14 @@ def checkout_session(request, plan_id):
         client_reference_id=plan_id
 
     )
-
     return redirect(session.url, code=303)
 
 
 def stripe_payment_success(request):
     try:
-        session = stripe.checkout.Session.retrieve(request.GET['session_id'])
+        session_id = request.GET.get("session_id")
+        stripe.api_key = settings.STRIPE_SECRET_KEY
+        session = stripe.checkout.Session.retrieve(session_id)
         plan_id = session.client_reference_id
         stripe_subscription_id = session.subscription
         stripe_customer_id = session.customer
