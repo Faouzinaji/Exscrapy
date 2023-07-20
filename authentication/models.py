@@ -6,8 +6,8 @@ from django.db import models
 
 
 GENDER = (
-    (1, "Mail"),
-    (2, "Femail"),
+    ('1', "Mail"),
+    ('2', "Femail"),
 )
 
 
