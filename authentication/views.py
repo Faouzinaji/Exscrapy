@@ -9,12 +9,16 @@ from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 
+from googleSearchScraper.settings import EMAIL_HOST_USER
 from .models import Landing, Price
+from .models import Profile
 
 
 class HomeView(View):
     template_name = 'landing.html'
     def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated and request.user.profile.changed_default_password == 'No':
+            return redirect('dashboard')
         banner = Landing.objects.filter(section__code='bn').last()
         intro = Landing.objects.filter(section__code='int')
         pric = Landing.objects.filter(section__code='pric').last()
@@ -27,18 +31,19 @@ class HomeView(View):
         return render(request, self.template_name, context)
 
 
-from .models import Profile
 def send_email_otp(x,user_email,otp):
 
-
     subject = 'Verification Code'
-
-    html_content = render_to_string('otp_email_template.html',
-                                    {'first_name': x.owner.first_name, 'last_name': x.owner.last_name,'otp':otp
-                                     })
+    html_content = render_to_string(
+        'otp_email_template.html',
+            {
+                'first_name': x.owner.first_name,
+                'last_name': x.owner.last_name,'otp':otp
+            }
+        )
     text_content = strip_tags(html_content)
 
-    msg = EmailMultiAlternatives(subject, text_content, 'adnanrafique340@gmail.com', user_email)
+    msg = EmailMultiAlternatives(subject, text_content, EMAIL_HOST_USER, user_email)
     msg.attach_alternative(html_content, "text/html")
     msg.send()
     return None
@@ -84,8 +89,6 @@ def forget_password(request):
             return redirect('forget_password')
 
         user=User.objects.filter(email=Username).first()
-        print(user)
-
         x= Profile.objects.filter(owner=user).first()
         if user is None:
             messages.error(request,'User not found with this Email')
