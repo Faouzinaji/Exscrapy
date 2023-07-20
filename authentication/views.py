@@ -60,7 +60,7 @@ def Login(request):
         if not password:
             messages.error(request, 'Password is required')
             return redirect('Login')
-        user = auth.authenticate(username=email.split('@', 1)[0], password=password)
+        user = auth.authenticate(email=email, password=password)
         if user is not None:
 
             login(request, user)
