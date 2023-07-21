@@ -1,3 +1,4 @@
+from typing import Iterable, Optional
 from django.contrib.auth.models import User
 from django.db import models
 
@@ -20,6 +21,11 @@ class Price_plan(models.Model):
         return self.title
     class Meta:
         verbose_name_plural = 'Price Plans'
+    
+    def save(self):
+        if not self.perline_price:
+            self.perline_price = self.price / self.no_of_lines
+        return super().save()
 
 
 class Subscriber(models.Model):
