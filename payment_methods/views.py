@@ -1,6 +1,6 @@
 from django.contrib import messages
 from django.shortcuts import render, redirect
-
+from django.contrib.auth.decorators import login_required
 from authentication.models import Profile
 from .models import *
 import stripe
@@ -10,7 +10,7 @@ from Home.models import Wallet
 import datetime
 
 
-
+@login_required
 def pricing(request):
     pricing = Price_plan.objects.all()
     users = Profile.objects.get(owner__email=request.user.email)
@@ -38,6 +38,7 @@ def pricing(request):
     return render(request, 'pricing_plan.html', {'plans': pricing,'user_wallet':user_wallet,'sub_exist':sub_exist,'current_active_plan':subscriber})
 
 
+@login_required
 def checkout(request, plan_id):
     planDetail = Price_plan.objects.get(pk=plan_id)
     users = Profile.objects.get(owner__email=request.user.email)
@@ -52,7 +53,7 @@ def checkout(request, plan_id):
         return redirect('pricing')
 
 
-
+@login_required
 def checkout_session(request, plan_id):
     stripe.api_key = settings.STRIPE_SECRET_KEY
     plan = Price_plan.objects.get(pk=plan_id)
@@ -79,7 +80,7 @@ def checkout_session(request, plan_id):
     )
     return redirect(session.url, code=303)
 
-
+@login_required
 def stripe_payment_success(request):
     try:
         session_id = request.GET.get("session_id")
@@ -129,12 +130,14 @@ def stripe_payment_success(request):
         return render(request, 'payment_cancel.html',{'user_wallet':user_wallet})
 
 
+@login_required
 def payment_cancel(request):
     users = Profile.objects.get(owner__email=request.user.email)
     user_wallet = Wallet.objects.get(user_id=users)
     return render(request, 'payment_cancel.html',{'user_wallet':user_wallet})
 
 
+@login_required
 def cancel_subscription(request):
     subscriber=Subscriber.objects.get(user=request.user,status='Active')
     stripe.api_key = settings.STRIPE_SECRET_KEY
