@@ -10,6 +10,7 @@ from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 
 from googleSearchScraper.settings import EMAIL_HOST_USER
+from payment_methods.models import Price_plan
 from .models import Landing, Price
 from .models import Profile
 
@@ -19,6 +20,7 @@ class HomeView(View):
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated and request.user.profile.changed_default_password == 'No':
             return redirect('dashboard')
+        pricing = Price_plan.objects.all()
         banner = Landing.objects.filter(section__code='bn').last()
         intro = Landing.objects.filter(section__code='int')
         pric = Landing.objects.filter(section__code='pric').last()
@@ -26,7 +28,7 @@ class HomeView(View):
         all_price = Price.objects.all()
         context = {
             'banner': banner, 'intro': intro, 'pric': pric,
-            'all_price': all_price, 'last': last
+            'all_price': all_price, 'last': last, 'pricing': pricing
         }
         return render(request, self.template_name, context)
 

@@ -39,12 +39,15 @@
         </div>
     </nav>
     <section id="banner" class="my-5 py-5">
-        <div class="container">
+        <div class="container-fluid">
             <div class="row">
                 <div class="col-md-8 text-center m-auto">
                     <h1>{{ banner.title }}</h1>
                     <p class="p-4">{{ banner.subtitle }}</p>
-                    <iframe width="600" height="330" src="https://www.youtube.com/embed/{{ banner.link }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                    <!-- <iframe width="600" height="330" src="https://www.youtube.com/embed/{{ banner.link }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe> -->
+                    <img class="w-100" src="{% static 'img/banner.gif' %}" alt="">
+                    <br>
+                    <br>
                     <br>
                     <a class="btn btn-primary text-light" href="{% url 'Login' %}">
                         <b>Get Start</b>
@@ -82,17 +85,56 @@
     <section id="pricing" class="my-5 py-5">
         <div class="container">
             <div class="row">
-                {% for obj in all_price %}
-                <div class="col-md-4">
+                <div class="col d-flex align-items-stretch flex-column">
                     <div class="card">
-                        <div class="card-body">
-                            <h4 class="text-primary">{{ obj.title }}</h4>
-                            <h6 class="py-3">{{ obj.price }}$ / mo</h6>
-                            <p>{{ obj.sub_title }}</p>
-                            {% for data in obj.features_set.all %}
-                            <p class="py-2">✔️ {{ data.title }}</p>
-                            {% endfor %}
+                        <div class="card-header text-center">
+                            <h5>Pay as Go</h5>
                         </div>
+                      <div class="card-body pt-0">
+                        <div class="row">
+                              <div class="col-12 text-center mt-2">
+                                <p><b>You have to pay <b> $0.01 per line</b> depending upon <b>No of queries </b></b></p>
+                                <p><b>0.01 $ / lines</b></p>
+                                   <p><b>Expensive for regular customers</b></p>
+                                   <p><b>Buy any plan to save your cost</b></p>
+                              </div>
+                        </div>
+                      </div>
+                      <div class="card-footer">
+                        <div class="text-center">
+                          <a href="{% url 'dashboard' %}" class="btn btn-md btn-info">
+                            <i class="fas fa-sign-in-alt"></i> Pay as Go
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                {% for plan in pricing %}
+                <div class="col d-flex align-items-stretch flex-column">
+                    <div class="card">
+                        <div class="card-header text-center">
+                            <h5>{{plan.title}}</h5>
+                        </div>
+                    <div class="card-body pt-0">
+                        <div class="row">
+                            <div class="col-12 text-center mt-2">
+                            <img src="{{plan.plan_img.url}}" alt="user-avatar" class="img-circle img-fluid">
+                            </div>
+                            <br>
+                            <div class="col-12 text-center">
+                                <p><b>Price: ${{plan.price}}</b></p>
+                                <p><b>{{plan.no_of_lines}} lines per month</b></p>
+                                <p><b>{{ plan.perline_price }} $ / lines</b></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="text-center">
+                        <a href="{% url 'checkout' plan.id %}" class="btn btn-md btn-info">
+                            Subscribe Now
+                        </a>
+                        </div>
+                    </div>
                     </div>
                 </div>
                 {% endfor %}
