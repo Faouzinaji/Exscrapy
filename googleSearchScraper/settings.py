@@ -15,7 +15,7 @@ from pathlib import Path
 from .local_settings import (
     SECRET_KEY, DEBUG, EMAIL_USER, GET_EMAIL_HOST, EMAIL_PASSWORD,
     STRIPE_PUBLISHABLE, STRIPE_SECRET, BASIC_PRICE,  PREMIUM_PRICE,
-    ADVANCE_PRICE, DATABASES, 
+    ADVANCE_PRICE, DATABASES, LIFETIME_PRICE
 )
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -223,6 +223,8 @@ STRIPE_SECRET_KEY = STRIPE_SECRET
 BASIC_PRICE_ID = BASIC_PRICE
 PREMIUM_PRICE_ID = PREMIUM_PRICE
 ADVANCE_PRICE_ID = ADVANCE_PRICE
+LIFETIME_PRICE_ID = LIFETIME_PRICE
+
 
 JAZZMIN_SETTINGS = {
     # title of the window (Will default to current_admin_site.site_title if absent or None)
