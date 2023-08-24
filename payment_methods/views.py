@@ -60,7 +60,8 @@ def checkout_session(request, plan_id):
     dict = {
         'Basic Plan': settings.BASIC_PRICE_ID, 
         'Premium Plan': settings.PREMIUM_PRICE_ID,
-        'Standard Plan': settings.ADVANCE_PRICE_ID
+        'Standard Plan': settings.ADVANCE_PRICE_ID,
+        'Lifetime Plan': settings.LIFETIME_PRICE_ID,
     }
     plan_price = dict[plan.title]
 
@@ -103,12 +104,8 @@ def stripe_payment_success(request):
         subsciption_from = datetime.date.today(),
         subsciption_to = datetime.date.today() + relativedelta(months=1)
         Subscriber.objects.create(
-            plan=plan,
-            user=user,
-            price=plan.price,
-            status='Active',
-            payment_method='Stripe',
-            subsciption_from=datetime.date.today(),
+            plan=plan, user=user, price=plan.price, status='Active',
+            payment_method='Stripe', subsciption_from=datetime.date.today(),
             stripeCustomerId=stripe_customer_id,
             stripeSubscriptionId=stripe_subscription_id,
             subsciption_to=datetime.date.today() + relativedelta(months=1)
@@ -120,6 +117,9 @@ def stripe_payment_success(request):
         transaction_history.objects.create(user_id=user,plan=plan).save()
         user_email = user.email
         plan_title = plan.title
+        if plan.title == 'Lifetime Plan':
+            user_profile.is_lifetime = True
+            user_profile.save()
         #send_payment_success_email(user_email, plan_title, subsciption_from, subsciption_to)
 
         return render(request, 'payment_success.html',{'subsciption_from':subsciption_from,'subsciption_to':subsciption_to,'plan_title':plan_title,'user_wallet':user_wallet})

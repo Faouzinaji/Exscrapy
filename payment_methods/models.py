@@ -11,11 +11,9 @@ class Price_plan(models.Model):
     description = models.CharField(max_length=1500,null=True,blank=True)
     price = models.IntegerField()
     perline_price = models.FloatField(null=True,blank=True)
-
+    api_keys = models.CharField(max_length=255, null=True, blank=True)
     no_of_lines=models.IntegerField()
     plan_img = models.ImageField(upload_to='Plan Images', blank=True, verbose_name='Plan Images')
-
-
 
     def __str__(self):
         return self.title
@@ -40,10 +38,6 @@ class Subscriber(models.Model):
     status = models.CharField(default='Expire',max_length=50,null=True)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Created At')
     updated_at = models.DateTimeField(auto_now=True, verbose_name='Updated At')
-
-
-
-
 
     class Meta:
         verbose_name_plural = 'Subscribers'
