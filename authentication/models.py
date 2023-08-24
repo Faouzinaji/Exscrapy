@@ -25,6 +25,8 @@ class Profile(models.Model):
     joined_via = models.CharField(max_length=2500, blank=True, null=True,verbose_name='How joined?')
     created_at = models.DateTimeField(auto_now_add=True,verbose_name='Created At')
     updated_at = models.DateTimeField(auto_now=True,verbose_name='Updated At')
+    is_lifetime = models.BooleanField(default=False)
+
 
     class Meta:
         verbose_name = 'User Profile'
