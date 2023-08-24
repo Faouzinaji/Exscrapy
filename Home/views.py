@@ -1,5 +1,5 @@
-import os
-from typing import Any, Dict
+import datetime
+from dateutil.relativedelta import relativedelta
 from django.conf import settings
 from django.db.models import Sum
 from django.views.generic import DetailView, UpdateView, TemplateView
@@ -26,15 +26,25 @@ def dashboard(request):
         users = Profile.objects.get(owner__email=request.user.email)
         user_wallet=Wallet.objects.get(user_id=users)
         user_quries=User_Query.objects.filter(user_id=request.user).order_by('-id')
-
-
         if users.changed_default_password == 'No':
             return redirect('setting_security')
 
-
-        context = {'user_profile': users,'user_wallet':user_wallet,'user_quries':user_quries}
-
-
+        if users.is_lifetime:
+            sub_user = Subscriber.objects.filter(user=request.user).last()
+            today = datetime.date.today()
+            subscription_to = datetime.date.today() + relativedelta(months=1)
+            if today >=  sub_user.subsciption_to:
+                sub_user.subsciption_from = today
+                sub_user.subsciption_to = subscription_to
+                sub_user.save()
+                # for request
+                user_wallet.available_requests_balance = 50000
+                user_wallet.save()
+        context = {
+            'user_profile': users,
+            'user_wallet':user_wallet,
+            'user_quries':user_quries
+        }
         return render(request, 'dashboard.html', context)
     except Exception as e:
         print('line no 33 exception is',e)
