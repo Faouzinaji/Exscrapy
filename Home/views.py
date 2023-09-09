@@ -48,12 +48,13 @@ def dashboard(request):
         return render(request, 'dashboard.html', context)
     except Exception as e:
         print('line no 33 exception is',e)
-
-        y = Profile.objects.create(
-            owner=request.user, changed_default_password='No', 
-            joined_via='Google Authentication'
-        )
-
+        try:
+            y = Profile.objects.get(owner=request.user)
+        except Exception as e:
+            y = Profile.objects.create(
+                owner=request.user, changed_default_password='No', 
+                joined_via='Google Authentication'
+            )
         if not Wallet.objects.filter(user_id=y).exists():
             purse = Wallet.objects.create(
 

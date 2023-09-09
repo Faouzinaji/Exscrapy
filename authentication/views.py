@@ -66,7 +66,6 @@ def Login(request):
         user = auth.authenticate(email=email, password=password)
         if user == None:
             user = auth.authenticate(username=email, password=password)
-        print(user, "*" * 100)
         if user is not None:
 
             login(request, user)
@@ -96,9 +95,19 @@ def sign_up(request):
             return redirect('sign_up')
         if password == re_password:
             user = User.objects.create_user(
-                username=email, email=email, password=password, is_active=True
+                username=email, email=email, password=password, is_active=False
             )
-            return redirect('Login')
+            profile = Profile.objects.create(
+                owner=user, changed_default_password='No', joined_via='Manual'
+            )
+            otp = str(random.randint(1000, 9999))
+            profile.otp = otp
+            profile.save()
+            user_email = []
+            user_email.append(user.email)
+            send_email_otp(profile, user_email, otp)
+            request.session['user_email'] = user.email
+            return redirect('otp_verified')
         else:
             messages.error(request,'Not authorized')
             return render(request, 'sign_up.html')
@@ -141,6 +150,27 @@ def forget_password(request):
         return redirect('reset_password')
 
     return render(request,'forget-password.html')
+
+
+def otp_verified(request):
+    user_email = request.session['user_email']
+    if request.method == 'POST':
+        otp = request.POST.get('2facode')
+        profile = Profile.objects.filter(owner__email=user_email).first()
+        if otp == profile.otp:
+            user = User.objects.get(email=user_email)
+            print(user.is_active, "*" * 100, "Before")
+            user.is_active = True
+            user.save()
+            print(user.is_active, "*" * 100, "After")
+            messages.success(request, 'Verification code match successfully')
+
+            return redirect('Login')
+        else:
+            messages.error(request,'Invalid OTP,please try again')
+            return render(request, 'reset_password_otp.html')
+
+    return render(request, 'reset_password_otp.html')
 
 
 def reset_password(request):
