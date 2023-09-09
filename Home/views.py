@@ -49,8 +49,10 @@ def dashboard(request):
     except Exception as e:
         print('line no 33 exception is',e)
 
-        y = Profile.objects.create(owner=request.user, changed_default_password='No',
-                                   joined_via='Google Authentication')
+        y = Profile.objects.create(
+            owner=request.user, changed_default_password='No', 
+            joined_via='Google Authentication'
+        )
 
         if not Wallet.objects.filter(user_id=y).exists():
             purse = Wallet.objects.create(
@@ -190,7 +192,6 @@ def setting_security(request):
                 messages.info(request, 'Password updated successfully.')
                 return redirect('pricing')
     else:
-
         return render(request, 'settings-security.html', context)
 
 

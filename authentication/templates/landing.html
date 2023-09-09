@@ -37,7 +37,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link btn btn-primary text-light" href="{% url 'Login' %}">
+                        <a class="nav-link btn btn-primary text-light" href="{% url 'sign_up' %}">
                             <b>Get Start</b>
                         </a>
                     </li>
@@ -60,7 +60,7 @@
                     <br>
                     <br>
                     <br>
-                    <a class="btn btn-primary text-light" href="{% url 'Login' %}">
+                    <a class="btn btn-primary text-light" href="{% url 'sign_up' %}">
                         <b>Get Start</b>
                     </a>
                 </div>
@@ -158,7 +158,7 @@
                 <h3><b>{{ last.title }}</b></h3>
                 <p>{{ last.subtitle }}</p>
                 <a href="{% url 'Login' %}" class="btn btn-outline-primary">Login</a>
-                <a href="{% url 'Login' %}" class="btn btn btn-primary">Get Start</a>
+                <a href="{% url 'sign_up' %}" class="btn btn btn-primary">Get Start</a>
             </div>
         </div>
     </section>

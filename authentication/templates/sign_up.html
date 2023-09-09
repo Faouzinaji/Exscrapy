@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static socialaccount  %}
 {% block title %}
-    Login
+    Sign Up
 {% endblock %}
 {% block content %}
 
@@ -15,10 +15,10 @@
 
     </div>
     <div class="card-body">
-      <p class="login-box-msg">Sign in to start your session</p>
+      <p class="login-box-msg">Sign up to start your session</p>
         <h6>{% include '_messages.html' %}</h6>
 
-      <form action="{% url 'Login' %}" method="post">
+      <form method="post">
             {% csrf_token %}
         <div class="input-group mb-3">
           <input type="email" class="form-control" name="username" placeholder="Email" required>
@@ -36,11 +36,19 @@
             </div>
           </div>
         </div>
+        <div class="input-group mb-3">
+          <input type="password" class="form-control" name="re-password" placeholder="Confirm Password" required>
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-lock"></span>
+            </div>
+          </div>
+        </div>
         <div class="row">
 
           <!-- /.col -->
           <div class="col-12">
-            <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+            <button type="submit" class="btn btn-primary btn-block">Sign Up</button>
           </div>
 
           <!-- /.col -->
@@ -55,8 +63,7 @@
       <!-- /.social-auth-links -->
 
       <p class="mb-1">
-        <a class="btn btn-sm btn-success" href="{% url 'forget_password' %}">I forgot my password</a>
-        <a class="btn btn-sm btn-primary" href="{% url 'sign_up' %}">Create New Account</a>
+        <a class="btn btn-sm btn-primary" href="{% url 'Login' %}">Go to login page</a>
       </p>
 
     </div>

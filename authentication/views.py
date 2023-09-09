@@ -50,6 +50,7 @@ def send_email_otp(x,user_email,otp):
     msg.send()
     return None
 
+
 def Login(request):
     if request.user.is_authenticated:
         return redirect('dashboard')
@@ -63,6 +64,9 @@ def Login(request):
             messages.error(request, 'Password is required')
             return redirect('Login')
         user = auth.authenticate(email=email, password=password)
+        if user == None:
+            user = auth.authenticate(username=email, password=password)
+        print(user, "*" * 100)
         if user is not None:
 
             login(request, user)
@@ -74,13 +78,38 @@ def Login(request):
     return render(request, 'Login.html')
 
 
+def sign_up(request):
+    if request.user.is_authenticated:
+        return redirect('dashboard')
+    if request.method == 'POST':
+        email = request.POST.get('username')
+        password = request.POST.get('password')
+        re_password = request.POST.get('re-password')
+        if not email:
+            messages.error(request, 'Email is required')
+            return redirect('sign_up')
+        if not password:
+            messages.error(request, 'Password is required')
+            return redirect('sign_up')
+        if not re_password:
+            messages.error(request, 'Confirm Password is required')
+            return redirect('sign_up')
+        if password == re_password:
+            user = User.objects.create_user(
+                username=email, email=email, password=password, is_active=True
+            )
+            return redirect('Login')
+        else:
+            messages.error(request,'Not authorized')
+            return render(request, 'sign_up.html')
+    return render(request, 'sign_up.html')
+
+
 
 def Logout(request):
     logout(request)
     messages.info(request,'You have been Logged Out')
     return redirect('Login')
-
-
 
 
 def forget_password(request):
@@ -122,16 +151,10 @@ def reset_password(request):
     if request.method == 'POST':
         otp = request.POST.get('2facode')
         profile = Profile.objects.filter(owner__email=Username).first()
-
-
-
         if otp == profile.otp:
-
-
              request.session['Username'] = Username
              messages.success(request, 'Verification code match successfully')
              return redirect('update_password')
-
         else:
             messages.error(request,'Invalid OTP,please try again')
             return render(request, 'reset_password_otp.html')
